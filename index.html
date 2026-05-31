@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VLXD Song Thịnh | Hệ Thống Vật Tư Kết Cấu</title>
     
-    <!-- LỚP BẢO VỆ 1: CONTENT SECURITY POLICY (CSP) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' https://images.unsplash.com data:;">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,6 +72,13 @@
             background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px;
         }
 
+        /* BANNER THÔNG BÁO HỆ THỐNG */
+        .announcement-banner {
+            background: #fef2f2; border-bottom: 1px solid #fee2e2;
+            color: #b91c1c; padding: 12px 40px; font-size: 13px;
+            font-weight: 500; display: flex; justify-content: space-between; align-items: center;
+        }
+
         .hero {
             height: 35vh; display: flex; align-items: center; padding: 0 40px;
             background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), 
@@ -110,10 +116,16 @@
             display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 35px;
         }
 
-        .product-card { background: var(--bg-body); transition: var(--transition); display: flex; flex-direction: column; }
-        .img-container { width: 100%; height: 220px; overflow: hidden; border-radius: 4px; background: var(--bg-surface); border: 1px solid #f3f4f6; }
+        .product-card { background: var(--bg-body); transition: var(--transition); display: flex; flex-direction: column; position: relative; }
+        .img-container { width: 100%; height: 220px; overflow: hidden; border-radius: 4px; background: var(--bg-surface); border: 1px solid #f3f4f6; position: relative; }
         .product-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .product-card:hover img { transform: scale(1.03); }
+        
+        .out-of-stock-badge {
+            position: absolute; top: 10px; left: 10px; background: rgba(239, 68, 68, 0.9);
+            color: white; padding: 4px 8px; font-size: 10px; font-weight: 700; border-radius: 3px; letter-spacing: 0.5px;
+        }
+        .product-card.muted { opacity: 0.65; }
 
         .product-info { padding: 12px 0; }
         .product-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: var(--text-main); height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -139,7 +151,8 @@
             color: var(--text-main); padding: 9px; border-radius: 4px;
             font-weight: 500; font-size: 12px; cursor: pointer; transition: var(--transition);
         }
-        .product-card:hover .btn-add { border-color: var(--text-main); background: var(--text-main); color: #ffffff; }
+        .product-card:hover .btn-add:not(:disabled) { border-color: var(--text-main); background: var(--text-main); color: #ffffff; }
+        .btn-add:disabled { background: #f3f4f6; color: #9ca3af; cursor: not-allowed; border-color: #e5e7eb; }
 
         /* PANELS */
         .panel-overlay {
@@ -151,7 +164,7 @@
         .panel-overlay.active { opacity: 1; pointer-events: auto; }
 
         .slide-panel {
-            background: #ffffff; width: 100%; max-width: 440px; height: 100vh;
+            background: #ffffff; width: 100%; max-width: 460px; height: 100vh;
             padding: 40px; transform: translateX(100%); transition: var(--transition);
             display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.02);
         }
@@ -162,6 +175,17 @@
         .close-panel { background: none; border: none; font-size: 18px; color: var(--text-muted); cursor: pointer; }
 
         .panel-content { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
+
+        /* GIAO DIỆN ADMIN TABS */
+        .admin-nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .admin-tab-btn { background: none; border: none; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; padding: 4px 8px; }
+        .admin-tab-btn.active { color: var(--accent-brick); font-weight: 700; border-bottom: 2px solid var(--accent-brick); }
+
+        .warehouse-admin-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+        .warehouse-input { width: 90px; padding: 4px 6px; font-size: 12px; border: 1px solid var(--border-color); border-radius: 4px; text-align: right; }
+        .warehouse-toggle-btn { padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 4px; cursor: pointer; border: 1px solid transparent; }
+        .warehouse-toggle-btn.in-stock { background: #d1fae5; color: #059669; }
+        .warehouse-toggle-btn.out-stock { background: #fee2e2; color: #ef4444; }
 
         .cart-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 15px 0; border-bottom: 1px solid var(--border-color); }
         .cart-item-info h4 { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
@@ -201,14 +225,15 @@
         .status-badge { padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 500; }
         .status-badge.pending { background: #fef3c7; color: #d97706; }
         .status-badge.confirmed { background: #d1fae5; color: #059669; }
+        .status-badge.issue { background: #fee2e2; color: #b91c1c; }
 
         .order-details { font-size: 12px; margin-bottom: 10px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
         .order-details-item { display: flex; justify-content: space-between; margin-bottom: 4px; }
         
         .order-shipping-info { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.4; }
-        .order-payment-info { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+        .order-issue-box { background: #fff5f5; border: 1px dashed #feb2b2; padding: 8px; border-radius: 4px; color: #c53030; font-size: 11px; margin-bottom: 10px; }
 
-        .order-total-row { display: flex; justify-content: space-between; align-items: center; }
+        .order-total-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
         .order-total-price { font-weight: 600; font-size: 13px; }
 
         .btn-cancel-order { background: #fff; border: 1px solid #f3f4f6; color: #ef4444; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); }
@@ -227,7 +252,7 @@
         .toast.success { border-left: 3px solid var(--accent-green); }
         .toast.error { border-left: 3px solid #ef4444; }
 
-        /* MODAL MODAL AUTH */
+        /* MODAL AUTH */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
@@ -275,13 +300,15 @@
                 <i class="far fa-user-circle"></i> Đăng nhập / Đăng ký
             </button>
             <button class="action-btn has-badge" onclick="togglePanel('order-panel', true)">
-                <i class="fas fa-file-invoice"></i> Đơn hệ thống (<span id="order-count">0</span>)
+                <i class="fas fa-file-invoice"></i> <span id="panel-btn-text">Đơn hệ thống</span> (<span id="order-count">0</span>)
             </button>
             <button class="action-btn" onclick="togglePanel('cart-panel', true)">
                 <i class="fas fa-shopping-bag"></i> Giỏ hàng [<span id="cart-count">0</span>]
             </button>
         </div>
     </header>
+
+    <div id="global-announcement-zone"></div>
 
     <section class="hero">
         <div class="hero-content">
@@ -308,7 +335,6 @@
 
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- PANEL 1: GIỎ HÀNG -->
     <div class="panel-overlay" id="cart-panel" onclick="togglePanel('cart-panel', false)">
         <div class="slide-panel" onclick="event.stopPropagation()">
             <div class="panel-header">
@@ -360,18 +386,23 @@
         </div>
     </div>
 
-    <!-- PANEL 2: ĐƠN HÀNG -->
     <div class="panel-overlay" id="order-panel" onclick="togglePanel('order-panel', false)">
         <div class="slide-panel" onclick="event.stopPropagation()">
             <div class="panel-header">
                 <h2 id="order-panel-title">Hóa đơn hệ thống</h2>
                 <button class="close-panel" onclick="togglePanel('order-panel', false)"><i class="fas fa-times"></i></button>
             </div>
+            
+            <div class="admin-nav-tabs" id="admin-tabs-nav-bar" style="display: none;">
+                <button class="admin-tab-btn active" id="tab-adm-orders" onclick="switchAdminSubTab('orders')">Quản lý Đơn</button>
+                <button class="admin-tab-btn" id="tab-adm-warehouse" onclick="switchAdminSubTab('warehouse')">Quản lý Kho & Giá</button>
+                <button class="admin-tab-btn" id="tab-adm-notify" onclick="switchAdminSubTab('notify')">Bảng thông báo</button>
+            </div>
+
             <div class="panel-content" id="order-content-container"></div>
         </div>
     </div>
 
-    <!-- POPUP MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
     <div class="modal-overlay" id="auth-modal" onclick="closeAuthModal()">
         <div class="auth-card" onclick="event.stopPropagation()" style="position: relative;">
             <button class="auth-close-btn" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
@@ -437,9 +468,7 @@
     </footer>
 
     <script>
-        // =========================================
         // LỚP BẢO VỆ MÃ NGUỒN CƠ BẢN
-        // =========================================
         document.addEventListener('contextmenu', event => {
             event.preventDefault();
             showToast('error', 'Hành động bảo mật: Tính năng click chuột phải bị khóa.');
@@ -469,35 +498,34 @@
             return temp.innerHTML;
         }
 
-        // =========================================
-        // MẢNG DỮ LIỆU SẢN PHẨM TẬP TRUNG (ARRAY)
-        // =========================================
-        const products = [
-            { id: 'thep6', name: 'Thép Cuộn Phi 6 Hòa Phát (CB240-T)', price: 17900000, category: 'thep', unit: 'Tấn', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80' },
-            { id: 'thep12', name: 'Thép Thanh Vằn Phi 12 Việt Úc (CB300-V)', price: 152000, category: 'thep', unit: 'Cây', img: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=500&q=80' },
-            { id: 'catxay', name: 'Cát Vàng Hạt Mịn (Chuyên Xây Tô)', price: 260000, category: 'catda', unit: 'm³', img: 'https://images.unsplash.com/photo-1604147706283-d7119b5b822c?auto=format&fit=crop&w=500&q=80' },
-            { id: 'catbt', name: 'Cát Sông Lô Hạt Lớn (Đổ Bê Tông)', price: 380000, category: 'catda', unit: 'm³', img: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=500&q=80' },
-            { id: 'da12', name: 'Đá Xanh Cường Độ Cao 1x2 (Đổ Sàn)', price: 340000, category: 'catda', unit: 'm³', img: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=500&q=80' },
-            { id: 'da46', name: 'Đá Cáp Khai Thác Sàng Lọc 4x6 (Lót Nền)', price: 310000, category: 'catda', unit: 'm³', img: 'https://images.unsplash.com/photo-1547927429-13000b0df055?auto=format&fit=crop&w=500&q=80' },
-            { id: 'xmnghison', name: 'Xi Măng Nghi Sơn Dân Dụng PCB40', price: 92000, category: 'ximang', unit: 'Bao', img: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=500&q=80' },
-            { id: 'xmbimson', name: 'Xi Măng Bỉm Sơn Đa Dụng PCB30', price: 86000, category: 'ximang', unit: 'Bao', img: 'https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&w=500&q=80' }
+        // MẢNG DỮ LIỆU SẢN PHẨM MẶC ĐỊNH CHƯA QUA CHỈNH SỬA
+        const defaultProducts = [
+            { id: 'thep6', name: 'Thép Cuộn Phi 6 Hòa Phát (CB240-T)', price: 17900000, category: 'thep', unit: 'Tấn', inStock: true, img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80' },
+            { id: 'thep12', name: 'Thép Thanh Vằn Phi 12 Việt Úc (CB300-V)', price: 152000, category: 'thep', unit: 'Cây', inStock: true, img: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=500&q=80' },
+            { id: 'catxay', name: 'Cát Vàng Hạt Mịn (Chuyên Xây Tô)', price: 260000, category: 'catda', unit: 'm³', inStock: true, img: 'https://images.unsplash.com/photo-1604147706283-d7119b5b822c?auto=format&fit=crop&w=500&q=80' },
+            { id: 'catbt', name: 'Cát Sông Lô Hạt Lớn (Đổ Bê Tông)', price: 380000, category: 'catda', unit: 'm³', inStock: true, img: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=500&q=80' },
+            { id: 'da12', name: 'Đá Xanh Cường Độ Cao 1x2 (Đổ Sàn)', price: 340000, category: 'catda', unit: 'm³', inStock: true, img: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=500&q=80' },
+            { id: 'da46', name: 'Đá Cáp Khai Thác Sàng Lọc 4x6 (Lót Nền)', price: 310000, category: 'catda', unit: 'm³', inStock: true, img: 'https://images.unsplash.com/photo-1547927429-13000b0df055?auto=format&fit=crop&w=500&q=80' },
+            { id: 'xmnghison', name: 'Xi Măng Nghi Sơn Dân Dụng PCB40', price: 92000, category: 'ximang', unit: 'Bao', inStock: true, img: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=500&q=80' },
+            { id: 'xmbimson', name: 'Xi Măng Bỉm Sơn Đa Dụng PCB30', price: 86000, category: 'ximang', unit: 'Bao', inStock: true, img: 'https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&w=500&q=80' }
         ];
 
-        let currentCategory = 'all';
-
-        // =========================================
-        // SỬA LỖI: HỆ THỐNG QUẢN LÝ BỘ NHỚ DATA TÀI KHOẢN
-        // =========================================
+        // KHỞI TẠO BỘ NHỚ LOCAL STORAGE
+        let products = JSON.parse(localStorage.getItem('sysProducts')) || defaultProducts;
         let users = JSON.parse(localStorage.getItem('users')) || []; 
         let currentUser = localStorage.getItem('currentUser') || null;
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let orders = JSON.parse(localStorage.getItem('orders')) || [];
         let selectedPaymentMethod = 'sau';
+        let adminActiveTab = 'orders'; // Quản lý tab nội bộ của Admin
+
+        let currentCategory = 'all';
 
         document.addEventListener('DOMContentLoaded', () => {
             if (currentUser) {
                 updateUIForLoggedInUser(currentUser);
             }
+            renderAnnouncement();
             renderProducts(products);
             updateBadges();
         });
@@ -513,20 +541,26 @@
 
             productsArray.forEach(prod => {
                 const card = document.createElement('div');
-                card.className = 'product-card';
+                card.className = `product-card ${!prod.inStock ? 'muted' : ''}`;
+                
+                const stockBadgeHTML = !prod.inStock ? `<div class="out-of-stock-badge">[HẾT HÀNG]</div>` : '';
+                const btnDisabledAttr = !prod.inStock ? 'disabled' : '';
+                const btnText = prod.inStock ? 'Thêm vào giỏ' : 'Tạm hết hàng';
+
                 card.innerHTML = `
                     <div class="img-container">
+                        ${stockBadgeHTML}
                         <img src="${prod.img}" alt="${prod.name}">
                     </div>
                     <div class="product-info">
                         <h3 class="product-title">${prod.name}</h3>
                         <div class="price">${formatVND(prod.price)} / ${prod.unit}</div>
                         <div class="quantity-control">
-                            <button onclick="changeQty('qty-${prod.id}', -1)">-</button>
-                            <input type="number" id="qty-${prod.id}" value="1" min="1" onchange="validateInputQty(this)">
-                            <button onclick="changeQty('qty-${prod.id}', 1)">+</button>
+                            <button onclick="changeQty('qty-${prod.id}', -1)" ${btnDisabledAttr}>-</button>
+                            <input type="number" id="qty-${prod.id}" value="1" min="1" onchange="validateInputQty(this)" ${btnDisabledAttr}>
+                            <button onclick="changeQty('qty-${prod.id}', 1)" ${btnDisabledAttr}>+</button>
                         </div>
-                        <button class="btn-add" onclick="addToCart('${prod.name}', ${prod.price}, 'qty-${prod.id}')">Thêm vào giỏ</button>
+                        <button class="btn-add" ${btnDisabledAttr} onclick="addToCart('${prod.id}', '${prod.name}', ${prod.price}, 'qty-${prod.id}')">${btnText}</button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -565,9 +599,7 @@
             input.value = val;
         }
 
-        // =========================================
-        // SỬA LỖI HOÀN TOÀN LOGIC ĐĂNG NHẬP / ĐĂNG KÝ
-        // =========================================
+        // HỆ THỐNG ĐĂNG NHẬP / ĐĂNG KÝ
         function openAuthModal(tab = 'login') {
             document.getElementById('auth-modal').classList.add('active');
             switchAuthTab(tab);
@@ -596,16 +628,19 @@
 
         function updateUIForLoggedInUser(username) {
             const userArea = document.getElementById('user-status-area');
+            const panelBtnText = document.getElementById('panel-btn-text');
             if (username === 'Hệ Thống Admin') {
                 userArea.innerHTML = `
-                    <i class="fas fa-user-shield" style="color:#059669;"></i> <strong>ADMIN PANEL</strong>
+                    <i class="fas fa-user-shield" style="color:#9a3412;"></i> <strong>ADMIN DASHBOARD</strong>
                     <span onclick="logout(event)" style="text-decoration:underline; cursor:pointer; color:#ef4444; font-size:11px; margin-left:8px; font-weight:normal;">[Thoát]</span>
                 `;
+                panelBtnText.innerText = "Điều Hành Admin";
             } else {
                 userArea.innerHTML = `
                     <i class="fas fa-user-check"></i> Chào, ${username} 
                     <span onclick="logout(event)" style="text-decoration:underline; cursor:pointer; color:#ef4444; font-size:11px; margin-left:8px; font-weight:normal;">[Thoát]</span>
                 `;
+                panelBtnText.innerText = "Đơn hệ thống";
             }
             userArea.onclick = null;
         }
@@ -627,33 +662,29 @@
                     return;
                 }
 
-                // Thẩm định kiểm tra xem tài khoản đã tồn tại chưa
                 const isExist = users.some(u => u.username.toLowerCase() === user.toLowerCase());
                 if (isExist) {
                     showToast('error', 'Thất bại: Tên tài khoản này đã có người sử dụng.');
                     return;
                 }
 
-                // Lưu tài khoản mới vào mảng dữ liệu LocalStorage
                 users.push({ username: user, email: email, password: pass });
                 localStorage.setItem('users', JSON.stringify(users));
                 
                 currentUser = sanitizeInput(user);
-                showToast('success', `Đăng ký thành công! Chào mừng thành viên mới: ${currentUser}`);
+                showToast('success', `Đăng ký thành công! Xin chào: ${currentUser}`);
                 document.getElementById('form-register').reset();
 
             } else {
-                // Logic Xử lý Đăng Nhập
                 const user = document.getElementById('login-user').value.trim();
                 const pass = document.getElementById('login-pass').value;
 
-                // Trường hợp 1: Check tài khoản quản trị tối cao
-                if (user === 'admin' && pass === '123') {
+                // THẨM ĐỊNH MẬT KHẨU ADMIN MỚI THEO YÊU CẦU
+                if (user === 'admin' && pass === '789songthinh.tp,hcm') {
                     currentUser = 'Hệ Thống Admin';
-                    showToast('success', 'Đăng nhập thành công với quyền Quản Trị Viên!');
+                    showToast('success', 'Đăng nhập thành công! Quyền Quản Trị Viên tối cao đã kích hoạt.');
                     document.getElementById('form-login').reset();
                 } else {
-                    // Trường hợp 2: Đối chiếu kiểm tra dữ liệu khách hàng đăng ký
                     const foundUser = users.find(u => u.username.toLowerCase() === user.toLowerCase() && u.password === pass);
                     
                     if (foundUser) {
@@ -670,6 +701,7 @@
             localStorage.setItem('currentUser', currentUser);
             updateUIForLoggedInUser(currentUser);
             closeAuthModal();
+            renderAnnouncement();
             updateBadges();
         }
 
@@ -679,15 +711,15 @@
             currentUser = null;
             
             const userArea = document.getElementById('user-status-area');
+            const panelBtnText = document.getElementById('panel-btn-text');
             userArea.innerHTML = `<i class="far fa-user-circle"></i> Đăng nhập / Đăng ký`;
+            panelBtnText.innerText = "Đơn hệ thống";
             userArea.onclick = () => openAuthModal('login');
             showToast('error', 'Đã đăng xuất khỏi tài khoản.');
+            renderAnnouncement();
             updateBadges();
         }
 
-        // =========================================
-        // HỆ THỐNG GIỎ HÀNG VÀ PHÂN QUYỀN HIỂN THỊ ĐƠN HÀNG
-        // =========================================
         function showToast(type, text) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -706,17 +738,25 @@
             if(isOpen) {
                 panel.classList.add('active');
                 if(id === 'cart-panel') renderCart();
-                if(id === 'order-panel') renderOrders();
+                if(id === 'order-panel') renderOrdersAndAdminCenter();
             } else { panel.classList.remove('active'); }
         }
 
-        function addToCart(name, price, inputId) {
+        // GIỎ HÀNG
+        function addToCart(id, name, price, inputId) {
             const input = document.getElementById(inputId);
             const qty = Math.max(1, parseInt(input.value) || 1);
-            const safeName = sanitizeInput(name);
+            
+            // Tìm sản phẩm trong kho xem có thực sự còn hàng hay không
+            const currentProd = products.find(p => p.id === id);
+            if (!currentProd || !currentProd.inStock) {
+                showToast('error', 'Thất bại: Sản phẩm này hiện tại đã hết hàng trong kho!');
+                return;
+            }
 
-            const existing = cart.find(item => item.name === safeName);
-            if(existing) { existing.qty += qty; } else { cart.push({ name: safeName, price, qty }); }
+            const safeName = sanitizeInput(name);
+            const existing = cart.find(item => item.productId === id);
+            if(existing) { existing.qty += qty; } else { cart.push({ productId: id, name: safeName, price: currentProd.price, qty }); }
             
             input.value = 1; 
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -728,7 +768,6 @@
             const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
             document.getElementById('cart-count').innerText = totalQty;
 
-            // Đếm số đơn hiển thị theo phân quyền người xem
             if (currentUser === 'Hệ Thống Admin') {
                 document.getElementById('order-count').innerText = orders.length; 
             } else {
@@ -757,6 +796,10 @@
 
             let total = 0;
             cart.forEach((item, index) => {
+                // Cập nhật giá thời gian thực từ kho vào giỏ hàng
+                const prodInStock = products.find(p => p.id === item.productId);
+                if (prodInStock) item.price = prodInStock.price;
+
                 total += item.price * item.qty;
                 const div = document.createElement('div');
                 div.className = 'cart-item';
@@ -804,7 +847,7 @@
         function checkout() {
             if(cart.length === 0) { showToast('error', 'Giỏ hàng đang trống!'); return; }
             if (currentUser === null) { showToast('error', 'Yêu cầu: Vui lòng đăng nhập để gửi đơn hàng.'); openAuthModal('login'); return; }
-            if (currentUser === 'Hệ Thống Admin') { showToast('error', 'Tài khoản Admin không có chức năng gửi đơn mua hàng.'); return; }
+            if (currentUser === 'Hệ Thống Admin') { showToast('error', 'Tài khoản Admin không dùng để đặt đơn hàng.'); return; }
 
             const shipName = document.getElementById('ship-name').value.trim();
             const shipPhone = document.getElementById('ship-phone').value.trim();
@@ -813,6 +856,7 @@
             if(!shipName || !shipPhone || !shipAddress) { showToast('error', 'Lỗi: Vui lòng điền thông tin điều phối xe.'); return; }
             if(!/^[0-9]{10}$/.test(shipPhone)) { showToast('error', 'Lỗi: Số điện thoại phải đúng 10 chữ số.'); return; }
 
+            // Tạo bản sao lưu giá thực tế lúc chốt đơn
             const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const paymentText = selectedPaymentMethod === 'truoc' ? 'Thanh toán trước (Chuyển khoản)' : 'Thanh toán sau (COD)';
             
@@ -824,7 +868,8 @@
                 paymentMethod: paymentText,
                 customer: currentUser, 
                 shipping: { name: sanitizeInput(shipName), phone: sanitizeInput(shipPhone), address: sanitizeInput(shipAddress) },
-                status: 'pending' 
+                status: 'pending',
+                issueMessage: '' // Trường lưu vết thông báo vấn đề đơn hàng của Admin
             };
 
             orders.unshift(newOrder);
@@ -841,99 +886,261 @@
             showToast('success', `Hệ thống ghi nhận đơn đặt hàng ${newOrder.id}.`);
         }
 
-        // =========================================
-        // PHÂN QUYỀN TRANG ĐƠN HÀNG GIỮA KHÁCH VÀ ADMIN
-        // =========================================
-        function renderOrders() {
+        // ========================================================
+        // KHU VỰC QUẢN TRỊ TRUNG TÂM VÀ ĐIỀU PHỐI (ADMIN PANEL)
+        // ========================================================
+        function switchAdminSubTab(tabName) {
+            adminActiveTab = tabName;
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(tabName === 'orders') document.getElementById('tab-adm-orders').classList.add('active');
+            if(tabName === 'warehouse') document.getElementById('tab-adm-warehouse').classList.add('active');
+            if(tabName === 'notify') document.getElementById('tab-adm-notify').classList.add('active');
+            renderOrdersAndAdminCenter();
+        }
+
+        function renderOrdersAndAdminCenter() {
             const container = document.getElementById('order-content-container');
             const titleEl = document.getElementById('order-panel-title');
+            const adminBar = document.getElementById('admin-tabs-nav-bar');
             container.innerHTML = '';
 
             const isAdmin = (currentUser === 'Hệ Thống Admin');
-            
-            // Bộ lọc: Admin xem tất cả, Khách chỉ xem đơn của chính họ
-            const visibleOrders = isAdmin ? orders : orders.filter(o => o.customer === currentUser);
 
-            if(visibleOrders.length === 0) {
-                container.innerHTML = `<div class="empty-msg">${isAdmin ? 'Hệ thống chưa nhận được đơn hàng nào.' : 'Bạn chưa thực hiện đơn đặt hàng nào.'}</div>`;
-                return;
-            }
-
-            titleEl.innerText = isAdmin ? "Bảng điều phối đơn (ADMIN)" : "Hóa đơn của bạn";
-
-            visibleOrders.forEach(order => {
-                const card = document.createElement('div');
-                card.className = 'order-card';
-
-                let itemsHTML = '';
-                order.items.forEach(item => {
-                    itemsHTML += `
-                        <div class="order-details-item">
-                            <span>${item.name} (x${item.qty})</span>
-                            <span>${formatVND(item.price * item.qty)}</span>
-                        </div>
-                    `;
-                });
-
-                // Phân quyền nút bấm theo tài khoản đăng nhập
-                let actionButtonHTML = '';
-                if (isAdmin) {
-                    if(order.status === 'pending') {
-                        actionButtonHTML = `<button class="action-btn" style="background:#059669; color:#fff; border:none; padding:6px 12px; font-size:11px;" onclick="adminApproveOrder('${order.id}')"><i class="fas fa-truck"></i> Duyệt cấp xe</button>`;
-                    } else {
-                        actionButtonHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:600;"><i class="fas fa-check-double"></i> Đã bốc dỡ lên xe</span>`;
-                    }
-                } else {
-                    if(order.status === 'pending') {
-                        actionButtonHTML = `<button class="btn-cancel-order" onclick="cancelOrder('${order.id}')">Rút lại đơn</button>`;
-                    } else {
-                        actionButtonHTML = `<span style="font-size:11px; color:var(--accent-green); font-weight:600;"><i class="fas fa-shipping-fast"></i> Xe vận tải đang giao</span>`;
-                    }
+            if (!isAdmin) {
+                // ĐỐI TƯỢNG KHÁCH HÀNG THƯỜNG
+                adminBar.style.display = 'none';
+                titleEl.innerText = "Hóa đơn của bạn";
+                
+                const userOrders = orders.filter(o => o.customer === currentUser);
+                if(userOrders.length === 0) {
+                    container.innerHTML = '<div class="empty-msg">Bạn chưa thực hiện đơn đặt hàng nào.</div>';
+                    return;
                 }
 
-                card.innerHTML = `
-                    <div class="order-meta">
-                        <span class="order-id">${order.id} [Khách: ${order.customer}]</span>
-                        <span>${order.time}</span>
-                        <span class="status-badge ${order.status}">
-                            ${order.status === 'pending' ? 'Chờ xác nhận' : 'Đã duyệt đơn'}
-                        </span>
-                    </div>
-                    <div class="order-details">
-                        ${itemsHTML}
-                    </div>
-                    <div class="order-shipping-info">
-                        <i class="fas fa-user-tag"></i> Người nhận: ${order.shipping.name} (${order.shipping.phone})<br>
-                        <i class="fas fa-map-marked-alt"></i> Vị trí hạ hàng: ${order.shipping.address}
-                    </div>
-                    <div class="order-total-row">
-                        <div>Tổng tiền: <span class="order-total-price">${formatVND(order.total)}</span></div>
-                        ${actionButtonHTML}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+                userOrders.forEach(order => container.appendChild(createOrderCardDOM(order, false)));
+            } else {
+                // ĐỐI TƯỢNG QUẢN TRỊ VIÊN ADMIN
+                adminBar.style.display = 'flex';
+                titleEl.innerText = "Trại điều phối LOGISTICS";
+
+                if (adminActiveTab === 'orders') {
+                    // SUB-TAB 1: QUẢN LÝ ĐƠN HÀNG TOÀN CỤC
+                    if(orders.length === 0) {
+                        container.innerHTML = '<div class="empty-msg">Hệ thống chưa ghi nhận đơn hàng nào.</div>';
+                        return;
+                    }
+                    orders.forEach(order => container.appendChild(createOrderCardDOM(order, true)));
+                } 
+                else if (adminActiveTab === 'warehouse') {
+                    // SUB-TAB 2: BIẾN ĐỘNG KHO VÀ DIỀU CHỈNH GIÁ THỜI GIAN THỰC
+                    const block = document.createElement('div');
+                    block.style.paddingTop = '10px';
+                    block.innerHTML = '<h4 style="font-size:12px; margin-bottom:15px; color:var(--text-muted);">DANH SÁCH VẬT TƯ LƯU KHO</h4>';
+                    
+                    products.forEach((prod, index) => {
+                        const row = document.createElement('div');
+                        row.className = 'warehouse-admin-item';
+                        row.innerHTML = `
+                            <div style="max-width:55%;">
+                                <strong>${prod.name}</strong><br>
+                                <span style="font-size:11px; color:var(--text-muted);">Đơn vị: ${prod.unit}</span>
+                            </div>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" class="warehouse-input" id="adm-price-${prod.id}" value="${prod.price}" onchange="updateAdminProductPrice('${prod.id}', this.value)">
+                                <button class="warehouse-toggle-btn ${prod.inStock ? 'in-stock' : 'out-stock'}" onclick="toggleAdminProductStock('${prod.id}')">
+                                    ${prod.inStock ? 'Còn hàng' : 'Hết hàng'}
+                                </button>
+                            </div>
+                        `;
+                        block.appendChild(row);
+                    });
+                    container.appendChild(block);
+                } 
+                else if (adminActiveTab === 'notify') {
+                    // SUB-TAB 3: TẠO THÔNG BÁO TĂNG GIẢM GIÁ THỊ TRƯỜNG TOÀN CỤC
+                    const currentNotice = localStorage.getItem('sysAnnouncement') || '';
+                    const block = document.createElement('div');
+                    block.style.paddingTop = '10px';
+                    block.innerHTML = `
+                        <h4 style="font-size:12px; margin-bottom:12px; color:var(--text-muted);">PHÁT ĐỘNG THÔNG BÁO THỊ TRƯỜNG</h4>
+                        <div class="shipping-field">
+                            <label>Nội dung thông báo tăng/giảm giá vật tư</label>
+                            <input type="text" id="adm-notice-input" value="${currentNotice}" placeholder="Ví dụ: Cảnh báo: Giá cát bê tông tăng 10% do lũ thượng nguồn...">
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:15px;">
+                            <button class="action-btn" style="background:var(--text-main); color:#fff; flex:1; justify-content:center; font-size:12px;" onclick="saveGlobalAnnouncement()">Đăng thông báo</button>
+                            <button class="action-btn" style="border-color:#ef4444; color:#ef4444; flex:1; justify-content:center; font-size:12px;" onclick="clearGlobalAnnouncement()">Xóa bảng tin</button>
+                        </div>
+                    `;
+                    container.appendChild(block);
+                }
+            }
         }
 
-        // Hàm xử lý duyệt đơn dành riêng cho Admin
+        function createOrderCardDOM(order, isAdminView) {
+            const card = document.createElement('div');
+            card.className = 'order-card';
+
+            let itemsHTML = '';
+            order.items.forEach(item => {
+                itemsHTML += `
+                    <div class="order-details-item">
+                        <span>${item.name} (x${item.qty})</span>
+                        <span>${formatVND(item.price * item.qty)}</span>
+                    </div>
+                `;
+            });
+
+            let statusText = 'Chờ xác nhận';
+            if(order.status === 'confirmed') statusText = 'Đã duyệt đơn';
+            if(order.status === 'issue') statusText = 'Đơn gặp lỗi';
+
+            // Khối hiển thị thông tin vấn đề nếu có lỗi phát sinh
+            const issueHTML = order.issueMessage ? `<div class="order-issue-box"><i class="fas fa-exclamation-triangle"></i> <strong>Sự cố đơn hàng:</strong> ${order.issueMessage}</div>` : '';
+
+            let actionButtonHTML = '';
+            if (isAdminView) {
+                // Quyền Admin thao tác duyệt đơn hoặc báo cáo sự cố hạ hàng
+                if (order.status !== 'confirmed') {
+                    actionButtonHTML = `
+                        <div style="display:flex; gap:6px; margin-top:10px; width:100%;">
+                            <button class="action-btn" style="background:#059669; color:#fff; border:none; padding:5px 10px; font-size:11px; flex:1; justify-content:center;" onclick="adminApproveOrder('${order.id}')"><i class="fas fa-check"></i> Duyệt xe</button>
+                            <button class="action-btn" style="background:#dc2626; color:#fff; border:none; padding:5px 10px; font-size:11px; flex:1; justify-content:center;" onclick="adminReportIssue('${order.id}')"><i class="fas fa-bug"></i> Báo lỗi đơn</button>
+                        </div>
+                    `;
+                } else {
+                    actionButtonHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:600; margin-top:10px; display:block;"><i class="fas fa-check-double"></i> Logistics đã thông qua</span>`;
+                }
+            } else {
+                // Quyền của Khách hàng bình thường
+                if (order.status === 'pending' || order.status === 'issue') {
+                    actionButtonHTML = `<button class="btn-cancel-order" style="margin-top:10px;" onclick="cancelOrder('${order.id}')">Hủy / Rút đơn</button>`;
+                } else {
+                    actionButtonHTML = `<span style="font-size:11px; color:var(--accent-green); font-weight:600; margin-top:10px; display:block;"><i class="fas fa-shipping-fast"></i> Đội xe vận tải bốc dỡ đang đi giao</span>`;
+                }
+            }
+
+            card.innerHTML = `
+                <div class="order-meta">
+                    <span class="order-id">${order.id} [Khách: ${order.customer}]</span>
+                    <span>${order.time}</span>
+                    <span class="status-badge ${order.status}">
+                        ${statusText}
+                    </span>
+                </div>
+                <div class="order-details">
+                    ${itemsHTML}
+                </div>
+                <div class="order-shipping-info">
+                    <i class="fas fa-user-tag"></i> Người nhận: ${order.shipping.name} (${order.shipping.phone})<br>
+                    <i class="fas fa-map-marked-alt"></i> Công trình: ${order.shipping.address}
+                </div>
+                ${issueHTML}
+                <div class="order-total-row">
+                    <div>Tổng tiền: <span class="order-total-price">${formatVND(order.total)}</span></div>
+                    ${actionButtonHTML}
+                </div>
+            `;
+            return card;
+        }
+
+        // BIẾN ĐỘNG ADMIN 1: DUYỆT ĐƠN ĐẠT CHUẨN
         function adminApproveOrder(orderId) {
             const order = orders.find(o => o.id === orderId);
             if(order) {
                 order.status = 'confirmed';
+                order.issueMessage = ''; // Xóa sạch thông báo lỗi cũ nếu đã được giải quyết duyệt đơn
                 localStorage.setItem('orders', JSON.stringify(orders));
-                renderOrders();
+                renderOrdersAndAdminCenter();
                 updateBadges();
-                showToast('success', `Đã phê duyệt lệnh xuất kho điều xe cho đơn ${orderId}`);
+                showToast('success', `Lệnh điều động vận chuyển đơn ${orderId} thành công.`);
+            }
+        }
+
+        // BIẾN ĐỘNG ADMIN 2: THÔNG BÁO LỖI / VẤN ĐỀ ĐƠN HÀNG CHO KHÁCH HÀNG PHÍA DƯỚI
+        function adminReportIssue(orderId) {
+            const reason = prompt("Nhập lý do / Sự cố đơn hàng vận chuyển (Ví dụ: Thiếu xe bốc dỡ, Vị trí công trình lầy lội, Không liên hệ được số điện thoại...):");
+            if (reason === null) return; // Nhấn hủy bỏ prompt
+            
+            const txt = reason.trim();
+            if (!txt) { showToast('error', 'Lỗi: Không được để trống lý do báo lỗi.'); return; }
+
+            const order = orders.find(o => o.id === orderId);
+            if(order) {
+                order.status = 'issue';
+                order.issueMessage = sanitizeInput(txt);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                renderOrdersAndAdminCenter();
+                showToast('error', `Đã phát hành báo cáo sự cố đơn hàng ${orderId}`);
+            }
+        }
+
+        // BIẾN ĐỘNG ADMIN 3: THAY ĐỔI GIÁ CẢ TỪNG SẢN PHẨM TRONG KHO HÀNG TẬP TRUNG
+        function updateAdminProductPrice(prodId, newPrice) {
+            const priceVal = parseInt(newPrice);
+            if (isNaN(priceVal) || priceVal < 0) { showToast('error', 'Giá vật tư nhập vào không hợp lệ.'); return; }
+
+            const prod = products.find(p => p.id === prodId);
+            if(prod) {
+                prod.price = priceVal;
+                localStorage.setItem('sysProducts', JSON.stringify(products));
+                renderProducts(products); // Vẽ lại lưới cửa hàng ngoài màn hình chính thời gian thực
+                showToast('success', `Đã cập nhật giá mới cho mã hàng ${prodId}`);
+            }
+        }
+
+        // BIẾN ĐỘNG ADMIN 4: ĐIỀU CHỈNH KHO CÒN HÀNG HOẶC BÁO HẾT HÀNG LẬP TỨC TRÊN WEBSITE
+        function toggleAdminProductStock(prodId) {
+            const prod = products.find(p => p.id === prodId);
+            if (prod) {
+                prod.inStock = !prod.inStock;
+                localStorage.setItem('sysProducts', JSON.stringify(products));
+                switchAdminSubTab('warehouse'); // Tải lại tab kho hàng admin
+                renderProducts(products);      // Vẽ lại giao diện cửa hàng tổng
+                showToast('success', `Mã hàng ${prodId} chuyển sang trạng thái: ${prod.inStock ? 'Còn Hàng' : 'Hết Hàng'}`);
+            }
+        }
+
+        // BIẾN ĐỘNG ADMIN 5: TẠO THÔNG BÁO TĂNG GIẢM GIÁ THỊ TRƯỜNG DẠNG BANNER CHẠY TOÀN TRANG WEB
+        function saveGlobalAnnouncement() {
+            const msgInput = document.getElementById('adm-notice-input').value.trim();
+            if (!msgInput) { showToast('error', 'Vui lòng nhập nội dung thông báo thị trường trước.'); return; }
+
+            localStorage.setItem('sysAnnouncement', sanitizeInput(msgInput));
+            renderAnnouncement();
+            showToast('success', 'Đã xuất bản bảng tin giá cả thị trường lên toàn hệ thống!');
+        }
+
+        // BIẾN ĐỘNG ADMIN 6: XÓA BẢNG TIN BANNER
+        function clearGlobalAnnouncement() {
+            localStorage.removeItem('sysAnnouncement');
+            document.getElementById('adm-notice-input').value = '';
+            renderAnnouncement();
+            showToast('error', 'Đã thu hồi bảng tin thông báo thị trường.');
+        }
+
+        function renderAnnouncement() {
+            const zone = document.getElementById('global-announcement-zone');
+            const msg = localStorage.getItem('sysAnnouncement') || '';
+            
+            if (msg) {
+                zone.innerHTML = `
+                    <div class="announcement-banner">
+                        <span><i class="fas fa-bullhorn"></i> <strong>THỊ TRƯỜNG:</strong> ${msg}</span>
+                    </div>
+                `;
+            } else {
+                zone.innerHTML = '';
             }
         }
 
         function cancelOrder(id) {
             const index = orders.findIndex(order => order.id === id);
-            if(index !== -1 && orders[index].status === 'pending') {
+            if(index !== -1 && (orders[index].status === 'pending' || orders[index].status === 'issue')) {
                 orders.splice(index, 1);
                 localStorage.setItem('orders', JSON.stringify(orders));
                 updateBadges();
-                renderOrders();
+                renderOrdersAndAdminCenter();
                 showToast('error', `Đã rút và hủy đơn đặt hàng ${id}.`);
             }
         }
