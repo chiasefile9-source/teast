@@ -5,24 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VLXD Song Thịnh | Hệ Thống Vật Tư Kết Cấu</title>
     
-    <!-- 
-      =========================================
-      LỚP BẢO VỆ 1: CONTENT SECURITY POLICY (CSP)
-      Chỉ cho phép tải tài nguyên từ các nguồn bảo mật được chỉ định trước
-      =========================================
-    -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' https://images.unsplash.com data:;">
 
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* =========================================
-           THIẾT KẾ TỐI GIẢN & EDITORIAL STYLE
+           1. THIẾT KẾ TỐI GIẢN & EDITORIAL STYLE
            ========================================= */
         :root {
             --bg-body: #ffffff;
@@ -42,7 +34,6 @@
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
-            /* Chống bôi đen sao chép văn bản cơ bản */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -65,7 +56,7 @@
         }
         .logo span { color: var(--accent-brick); font-weight: 300; }
 
-        .header-actions { display: flex; gap: 15px; }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
 
         .action-btn {
             font-size: 13px; font-weight: 500; color: var(--text-main);
@@ -78,6 +69,11 @@
             background: var(--accent-brick); color: #fff;
             padding: 1px 6px; border-radius: 10px; font-size: 11px;
         }
+        
+        .user-status-btn {
+            font-size: 13px; font-weight: 600; color: var(--accent-brick);
+            background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px;
+        }
 
         .hero {
             height: 35vh; display: flex; align-items: center; padding: 0 40px;
@@ -89,10 +85,36 @@
         .hero-content h1 { font-size: 2.2rem; font-weight: 600; line-height: 1.2; margin-bottom: 12px; }
         .hero-content p { color: var(--text-muted); font-size: 14px; font-weight: 300; }
 
-        .section-title { font-size: 1.3rem; font-weight: 600; padding: 50px 40px 20px; letter-spacing: -0.3px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); margin: 0 40px 30px; padding-left: 0; }
+        /* THANH ĐIỀU KHIỂN: TÌM KIẾM & LỌC */
+        .controls-wrapper {
+            padding: 30px 40px 0;
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;
+        }
+        .search-box {
+            position: relative; width: 100%; max-width: 320px;
+        }
+        .search-box input {
+            width: 100%; padding: 10px 16px 10px 38px; font-size: 13px;
+            border: 1px solid var(--border-color); border-radius: 4px; outline: none; transition: var(--transition);
+        }
+        .search-box input:focus { border-color: var(--text-main); }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
 
+        .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-btn {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 500;
+            color: var(--text-muted); cursor: pointer; transition: var(--transition);
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--text-main); color: #fff; border-color: var(--text-main);
+        }
+
+        .section-title { font-size: 1.3rem; font-weight: 600; padding: 40px 40px 20px; letter-spacing: -0.3px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); margin: 0 40px 30px; padding-left: 0; }
+
+        /* LƯỚI SẢN PHẨM */
         .products-grid {
-            padding: 0 40px 80px;
+            padding: 0 40px 80px; min-height: 40vh;
             display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 35px;
         }
 
@@ -127,7 +149,9 @@
         }
         .product-card:hover .btn-add { border-color: var(--text-main); background: var(--text-main); color: #ffffff; }
 
-        /* SLIDE-OUT PANEL */
+        /* =========================================
+           2. SLIDE-OUT PANEL (GIỎ HÀNG / ĐƠN HÀNG)
+           ========================================= */
         .panel-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.15); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
@@ -154,6 +178,17 @@
         .cart-item-price { color: var(--text-muted); font-size: 12px; margin-bottom: 8px; display: block; }
         .remove-btn { color: #9ca3af; background: none; border: none; cursor: pointer; font-size: 13px; }
         .remove-btn:hover { color: #ef4444; }
+
+        /* BIỂU MẪU GIAO HÀNG TRONG GIỎ HÀNG */
+        .shipping-box {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: 6px; padding: 16px; margin-top: 15px;
+        }
+        .shipping-box h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 12px; color: var(--text-main); letter-spacing: 0.3px; }
+        .shipping-field { margin-bottom: 10px; }
+        .shipping-field label { display: block; font-size: 11px; font-weight: 500; color: var(--text-muted); margin-bottom: 4px; }
+        .shipping-field input { width: 100%; padding: 8px 10px; font-size: 12px; border: 1px solid var(--border-color); border-radius: 4px; outline: none; }
+        .shipping-field input:focus { border-color: var(--text-main); }
 
         .payment-module {
             background: var(--bg-surface); border: 1px solid var(--border-color);
@@ -192,6 +227,7 @@
         .order-details { font-size: 12px; margin-bottom: 10px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
         .order-details-item { display: flex; justify-content: space-between; margin-bottom: 4px; }
         
+        .order-shipping-info { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.4; }
         .order-payment-info { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
         .order-payment-info i { color: var(--text-main); }
 
@@ -218,6 +254,39 @@
         .toast.success { border-left: 3px solid var(--accent-green); }
         .toast.error { border-left: 3px solid #ef4444; }
 
+        /* =========================================
+           3. POPUP MODAL ĐĂNG NHẬP / ĐĂNG KÝ
+           ========================================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            z-index: 2000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: var(--transition);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .auth-card {
+            background: #ffffff; width: 100%; max-width: 380px; padding: 35px;
+            border-radius: 6px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color); transform: scale(0.95); transition: var(--transition);
+        }
+        .modal-overlay.active .auth-card { transform: scale(1); }
+
+        .auth-tabs { display: flex; gap: 20px; margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .auth-tab { font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; background: none; border: none; text-transform: uppercase; letter-spacing: 0.5px; position: relative; padding-bottom: 10px; }
+        .auth-tab.active { color: var(--text-main); font-weight: 700; }
+        .auth-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--accent-brick); }
+
+        .auth-form-group { margin-bottom: 16px; }
+        .auth-form-group label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.3px; }
+        .auth-form-group input { width: 100%; padding: 10px 12px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 4px; outline: none; font-family: inherit; transition: var(--transition); }
+        .auth-form-group input:focus { border-color: var(--text-main); }
+
+        .auth-submit-btn { width: 100%; background: var(--text-main); color: #fff; border: none; padding: 12px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; margin-top: 10px; transition: var(--transition); }
+        .auth-submit-btn:hover { background: #222; }
+
+        .auth-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; }
+
         /* FOOTER INFO */
         .footer-info-section {
             padding: 60px 40px; background: var(--bg-surface); border-top: 1px solid var(--border-color);
@@ -232,10 +301,12 @@
 </head>
 <body>
 
-    <!-- Header Navigation -->
     <header>
         <a href="#" class="logo">Song <span>Thịnh // Logistics</span></a>
         <div class="header-actions">
+            <button id="user-status-area" class="user-status-btn" onclick="openAuthModal('login')">
+                <i class="far fa-user-circle"></i> Đăng nhập / Đăng ký
+            </button>
             <button class="action-btn has-badge" onclick="togglePanel('order-panel', true)">
                 <i class="fas fa-file-invoice"></i> Đơn của bạn (<span id="order-count">0</span>)
             </button>
@@ -245,7 +316,6 @@
         </div>
     </header>
 
-    <!-- Banner -->
     <section class="hero">
         <div class="hero-content">
             <h1>Phân phối phân cấp.<br>Chuỗi cung ứng toàn diện.</h1>
@@ -253,150 +323,25 @@
         </div>
     </section>
 
-    <!-- DANH SÁCH SẢN PHẨM -->
-    <h2 class="section-title">Danh mục vật tư cốt lõi</h2>
-    <div class="products-grid">
-        
-        <!-- THÉP 1 -->
-        <div class="product-card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" alt="Thép cuộn">
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">Thép Cuộn Phi 6 Hòa Phát (CB240-T)</h3>
-                <div class="price">17.900.000đ / Tấn</div>
-                <div class="quantity-control">
-                    <button onclick="changeQty('qty-thep6', -1)">-</button>
-                    <input type="number" id="qty-thep6" value="1" min="1">
-                    <button onclick="changeQty('qty-thep6', 1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addToCart('Thép Cuộn Phi 6 Hòa Phát', 17900000, 'qty-thep6')">Thêm vào giỏ</button>
-            </div>
+    <div class="controls-wrapper">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Tìm kiếm vật tư kết cấu..." oninput="handleSearchFilter()">
         </div>
-
-        <!-- THÉP 2 -->
-        <div class="product-card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=500&q=80" alt="Thép thanh">
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">Thép Thanh Vằn Phi 12 Việt Úc (CB300-V)</h3>
-                <div class="price">152.000đ / Cây</div>
-                <div class="quantity-control">
-                    <button onclick="changeQty('qty-thep12', -1)">-</button>
-                    <input type="number" id="qty-thep12" value="1" min="1">
-                    <button onclick="changeQty('qty-thep12', 1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addToCart('Thép Thanh Vằn Phi 12 Việt Úc', 152000, 'qty-thep12')">Thêm vào giỏ</button>
-            </div>
-        </div>
-        
-        <!-- CÁT 1 -->
-        <div class="product-card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?auto=format&fit=crop&w=500&q=80" alt="Cát xây">
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">Cát Vàng Hạt Mịn (Chuyên Xây Tô)</h3>
-                <div class="price">260.000đ / m³</div>
-                <div class="quantity-control">
-                    <button onclick="changeQty('qty-catxay', -1)">-</button>
-                    <input type="number" id="qty-catxay" value="1" min="1">
-                    <button onclick="changeQty('qty-catxay', 1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addToCart('Cát Vàng Hạt Mịn Xây Tô', 260000, 'qty-catxay')">Thêm vào giỏ</button>
-            </div>
-        </div>
-
-        <!-- CÁT 2 -->
-        <div class="product-card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=500&q=80" alt="Cát bê tông">
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">Cát Sông Lô Hạt Lớn (Đổ Bê Tông)</h3>
-                <div class="price">380.000đ / m³</div>
-                <div class="quantity-control">
-                    <button onclick="changeQty('qty-catbt', -1)">-</button>
-                    <input type="number" id="qty-catbt" value="1" min="1">
-                    <button onclick="changeQty('qty-catbt', 1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addToCart('Cát Sông Lô Đổ Bê Tông', 380000, 'qty-catbt')">Thêm vào giỏ</button>
-            </div>
-        </div>
-        
-        <!-- ĐÁ 1 -->
-        <div class="product-card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=500&q=80" alt="Đá 1x2">
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">Đá Xanh Cường Độ Cao 1x2 (Đổ Sàn)</h3>
-                <div class="price">340.000đ / m³</div>
-                <div class="quantity-control">
-                    <button onclick="changeQty('qty-da12', -1)">-</button>
-                    <input type="number" id="qty-da12" value="1" min="1">
-                    <button onclick="changeQty('qty-da12', 1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addToCart('Đá Xanh Cao Cấp 1x2', 340000, 'qty-da12')">Thêm vào giỏ</button>
-            </div>
-        </div>
-
-        <!-- ĐÁ 2 -->
-        <div class="product-card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1547927429-13000b0df055?auto=format&fit=crop&w=500&q=80" alt="Đá 4x6">
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">Đá Cáp Khai Thác Sàng Lọc 4x6 (Lót Nền)</h3>
-                <div class="price">310.000đ / m³</div>
-                <div class="quantity-control">
-                    <button onclick="changeQty('qty-da46', -1)">-</button>
-                    <input type="number" id="qty-da46" value="1" min="1">
-                    <button onclick="changeQty('qty-da46', 1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addToCart('Đá Khai Thác Lót Nền 4x6', 310000, 'qty-da46')">Thêm vào giỏ</button>
-            </div>
-        </div>
-
-        <!-- XI MĂNG 1 -->
-        <div class="product-card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=500&q=80" alt="Xi măng Nghi Sơn">
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">Xi Măng Nghi Sơn Dân Dụng PCB40</h3>
-                <div class="price">92.000đ / Bao</div>
-                <div class="quantity-control">
-                    <button onclick="changeQty('qty-xmnghison', -1)">-</button>
-                    <input type="number" id="qty-xmnghison" value="1" min="1">
-                    <button onclick="changeQty('qty-xmnghison', 1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addToCart('Xi Măng Nghi Sơn PCB40', 92000, 'qty-xmnghison')">Thêm vào giỏ</button>
-            </div>
-        </div>
-
-        <!-- XI MĂNG 2 -->
-        <div class="product-card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&w=500&q=80" alt="Xi măng Bỉm Sơn">
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">Xi Măng Bỉm Sơn Đa Dụng PCB30</h3>
-                <div class="price">86.000đ / Bao</div>
-                <div class="quantity-control">
-                    <button onclick="changeQty('qty-xmbimson', -1)">-</button>
-                    <input type="number" id="qty-xmbimson" value="1" min="1">
-                    <button onclick="changeQty('qty-xmbimson', 1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addToCart('Xi Măng Bỉm Sơn PCB30', 86000, 'qty-xmbimson')">Thêm vào giỏ</button>
-            </div>
+        <div class="filter-tabs">
+            <button class="filter-btn active" id="btn-cat-all" onclick="filterCategory('all')">Tất cả</button>
+            <button class="filter-btn" id="btn-cat-thep" onclick="filterCategory('thep')">Thép</button>
+            <button class="filter-btn" id="btn-cat-catda" onclick="filterCategory('catda')">Cát & Đá</button>
+            <button class="filter-btn" id="btn-cat-ximang" onclick="filterCategory('ximang')">Xi măng</button>
         </div>
     </div>
 
+    <h2 class="section-title">Danh mục vật tư cốt lõi</h2>
+    <div class="products-grid" id="products-grid-container">
+        </div>
+
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- PANEL 1: GIỎ HÀNG -->
     <div class="panel-overlay" id="cart-panel" onclick="togglePanel('cart-panel', false)">
         <div class="slide-panel" onclick="event.stopPropagation()">
             <div class="panel-header">
@@ -404,19 +349,37 @@
                 <button class="close-panel" onclick="togglePanel('cart-panel', false)"><i class="fas fa-times"></i></button>
             </div>
             
-            <div class="panel-content" id="cart-content-container"></div>
+            <div class="panel-content">
+                <div id="cart-content-container"></div>
 
-            <div class="payment-module" id="payment-module-box" style="display: none;">
-                <h3>Phương thức thanh toán</h3>
-                <div class="payment-options">
-                    <label class="payment-label selected" id="lbl-pay-sau" onclick="selectPayment('sau')">
-                        <input type="radio" name="pay-method" id="pay-sau" value="sau" checked>
-                        <i class="fas fa-truck-loading"></i> Trả sau (COD)
-                    </label>
-                    <label class="payment-label" id="lbl-pay-truoc" onclick="selectPayment('truoc')">
-                        <input type="radio" name="pay-method" id="pay-truoc" value="truoc">
-                        <i class="fas fa-university"></i> Trả trước (CK)
-                    </label>
+                <div class="shipping-box" id="shipping-module-box" style="display: none;">
+                    <h3>Thông tin điều phối xe</h3>
+                    <div class="shipping-field">
+                        <label>Tên người nhận hàng tại công trình</label>
+                        <input type="text" id="ship-name" placeholder="Ví dụ: Nguyễn Văn A">
+                    </div>
+                    <div class="shipping-field">
+                        <label>Số điện thoại liên hệ hạ hàng</label>
+                        <input type="text" id="ship-phone" placeholder="Ví dụ: 0912345678" maxlength="10">
+                    </div>
+                    <div class="shipping-field">
+                        <label>Vị trí / Địa điểm nhận vật tư</label>
+                        <input type="text" id="ship-address" placeholder="Ví dụ: Khối 3, Thị trấn Đô Lương">
+                    </div>
+                </div>
+
+                <div class="payment-module" id="payment-module-box" style="display: none;">
+                    <h3>Phương thức thanh toán</h3>
+                    <div class="payment-options">
+                        <label class="payment-label selected" id="lbl-pay-sau" onclick="selectPayment('sau')">
+                            <input type="radio" name="pay-method" id="pay-sau" value="sau" checked>
+                            <i class="fas fa-truck-loading"></i> Trả sau (COD)
+                        </label>
+                        <label class="payment-label" id="lbl-pay-truoc" onclick="selectPayment('truoc')">
+                            <input type="radio" name="pay-method" id="pay-truoc" value="truoc">
+                            <i class="fas fa-university"></i> Trả trước (CK)
+                        </label>
+                    </div>
                 </div>
             </div>
 
@@ -430,7 +393,6 @@
         </div>
     </div>
 
-    <!-- PANEL 2: ĐƠN HÀNG -->
     <div class="panel-overlay" id="order-panel" onclick="togglePanel('order-panel', false)">
         <div class="slide-panel" onclick="event.stopPropagation()">
             <div class="panel-header">
@@ -441,7 +403,45 @@
         </div>
     </div>
 
-    <!-- INFO SECTION -->
+    <div class="modal-overlay" id="auth-modal" onclick="closeAuthModal()">
+        <div class="auth-card" onclick="event.stopPropagation()" style="position: relative;">
+            <button class="auth-close-btn" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Đăng nhập</button>
+                <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Đăng ký</button>
+            </div>
+
+            <form id="form-login" onsubmit="handleAuth(event, 'login')">
+                <div class="auth-form-group">
+                    <label>Tên tài khoản</label>
+                    <input type="text" id="login-user" required placeholder="Nhập tài khoản...">
+                </div>
+                <div class="auth-form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="login-pass" required placeholder="Nhập mật khẩu...">
+                </div>
+                <button type="submit" class="auth-submit-btn">Xác nhận đăng nhập</button>
+            </form>
+
+            <form id="form-register" onsubmit="handleAuth(event, 'register')" style="display: none;">
+                <div class="auth-form-group">
+                    <label>Tên tài khoản mới</label>
+                    <input type="text" id="reg-user" required placeholder="Tạo tên tài khoản...">
+                </div>
+                <div class="auth-form-group">
+                    <label>Địa chỉ Email</label>
+                    <input type="email" id="reg-email" required placeholder="example@gmail.com">
+                </div>
+                <div class="auth-form-group">
+                    <label>Mật khẩu bảo mật</label>
+                    <input type="password" id="reg-pass" required placeholder="Tạo mật khẩu...">
+                </div>
+                <button type="submit" class="auth-submit-btn">Đăng ký tài khoản</button>
+            </form>
+        </div>
+    </div>
+
     <section class="footer-info-section">
         <div class="info-column">
             <h4>Hệ thống Song Thịnh</h4>
@@ -467,33 +467,26 @@
         &copy; 2026 SONG THINH MATERIAL SUPPLY. RESPECT ARCHITECTS.
     </footer>
 
-    <!-- LOGIC HOẠT ĐỘNG TOÀN TRANG & BẢO MẬT -->
     <script>
         // =========================================
-        // LỚP BẢO VỆ 2: ANTI-DEVTOOLS & CHẶN COPY
+        // LỚP BẢO VỆ MÃ NGUỒN CƠ BẢN
         // =========================================
-        
-        // 1. Chặn menu chuột phải
         document.addEventListener('contextmenu', event => {
             event.preventDefault();
             showToast('error', 'Hành động bảo mật: Tính năng click chuột phải bị khóa.');
         });
 
-        // 2. Chặn các tổ hợp phím kiểm tra mã nguồn (F12, Ctrl+Shift+I, U, v.v.)
         document.addEventListener('keydown', function (e) {
-            // Chặn F12
             if (e.keyCode === 123) {
                 e.preventDefault();
                 showToast('error', 'Cảnh báo: Lớp phòng thủ đã chặn phím F12.');
                 return false;
             }
-            // Chặn Ctrl + Shift + I (Inspect) hoặc J (Console) hoặc C (Elements)
             if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
                 e.preventDefault();
                 showToast('error', 'Cảnh báo: Tổ hợp phím nhà phát triển đã bị vô hiệu hóa.');
                 return false;
             }
-            // Chặn Ctrl + U (Xem Source Code)
             if (e.ctrlKey && e.keyCode === 85) {
                 e.preventDefault();
                 showToast('error', 'Hành động bảo mật: Không được phép xem trực tiếp mã nguồn.');
@@ -501,21 +494,211 @@
             }
         });
 
-        // 3. Hàm chuẩn hóa dữ liệu đầu vào (Chống XSS chèn thẻ độc hại)
         function sanitizeInput(text) {
             const temp = document.createElement('div');
             temp.textContent = text;
             return temp.innerHTML;
         }
 
+        // =========================================
+        // MẢNG DỮ LIỆU SẢN PHẨM TẬP TRUNG (ARRAY)
+        // =========================================
+        const products = [
+            { id: 'thep6', name: 'Thép Cuộn Phi 6 Hòa Phát (CB240-T)', price: 17900000, category: 'thep', unit: 'Tấn', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80' },
+            { id: 'thep12', name: 'Thép Thanh Vằn Phi 12 Việt Úc (CB300-V)', price: 152000, category: 'thep', unit: 'Cây', img: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=500&q=80' },
+            { id: 'catxay', name: 'Cát Vàng Hạt Mịn (Chuyên Xây Tô)', price: 260000, category: 'catda', unit: 'm³', img: 'https://images.unsplash.com/photo-1604147706283-d7119b5b822c?auto=format&fit=crop&w=500&q=80' },
+            { id: 'catbt', name: 'Cát Sông Lô Hạt Lớn (Đổ Bê Tông)', price: 380000, category: 'catda', unit: 'm³', img: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=500&q=80' },
+            { id: 'da12', name: 'Đá Xanh Cường Độ Cao 1x2 (Đổ Sàn)', price: 340000, category: 'catda', unit: 'm³', img: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=500&q=80' },
+            { id: 'da46', name: 'Đá Cáp Khai Thác Sàng Lọc 4x6 (Lót Nền)', price: 310000, category: 'catda', unit: 'm³', img: 'https://images.unsplash.com/photo-1547927429-13000b0df055?auto=format&fit=crop&w=500&q=80' },
+            { id: 'xmnghison', name: 'Xi Măng Nghi Sơn Dân Dụng PCB40', price: 92000, category: 'ximang', unit: 'Bao', img: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=500&q=80' },
+            { id: 'xmbimson', name: 'Xi Măng Bỉm Sơn Đa Dụng PCB30', price: 86000, category: 'ximang', unit: 'Bao', img: 'https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&w=500&q=80' }
+        ];
+
+        let currentCategory = 'all';
 
         // =========================================
-        // LOGIC HỆ THỐNG QUẢN LÝ CỬA HÀNG (CORE)
+        // KHỞI TẠO BIẾN & TẢI TRẠNG THÁI TỪ LOCALSTORAGE
         // =========================================
-        let cart = [];
-        let orders = [];
+        let currentUser = localStorage.getItem('currentUser') || null;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
         let selectedPaymentMethod = 'sau';
 
+        // Khởi động trang web
+        document.addEventListener('DOMContentLoaded', () => {
+            if (currentUser) {
+                updateUIForLoggedInUser(currentUser);
+            }
+            renderProducts(products); // Đổ dữ liệu sản phẩm gốc ra grid
+            updateBadges();
+        });
+
+        // Hàm Đổ Dữ Liệu Sản Phẩm Ra Giao Diện
+        function renderProducts(productsArray) {
+            const container = document.getElementById('products-grid-container');
+            container.innerHTML = '';
+
+            if(productsArray.length === 0) {
+                container.innerHTML = '<div class="empty-msg" style="grid-column: 1/-1;">Không tìm thấy vật tư phù hợp với từ khóa.</div>';
+                return;
+            }
+
+            productsArray.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="img-container">
+                        <img src="${prod.img}" alt="${prod.name}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${prod.name}</h3>
+                        <div class="price">${formatVND(prod.price)} / ${prod.unit}</div>
+                        <div class="quantity-control">
+                            <button onclick="changeQty('qty-${prod.id}', -1)">-</button>
+                            <input type="number" id="qty-${prod.id}" value="1" min="1" onchange="validateInputQty(this)">
+                            <button onclick="changeQty('qty-${prod.id}', 1)">+</button>
+                        </div>
+                        <button class="btn-add" onclick="addToCart('${prod.name}', ${prod.price}, 'qty-${prod.id}')">Thêm vào giỏ</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Kiểm tra tính hợp lệ số lượng gõ tay
+        function validateInputQty(input) {
+            let val = parseInt(input.value);
+            if(isNaN(val) || val < 1) {
+                input.value = 1;
+            }
+        }
+
+        // Xử lý Tìm kiếm kết hợp Lọc danh mục
+        function handleSearchFilter() {
+            const keyword = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            const filtered = products.filter(prod => {
+                const matchKeyword = prod.name.toLowerCase().includes(keyword);
+                const matchCategory = (currentCategory === 'all' || prod.category === currentCategory);
+                return matchKeyword && matchCategory;
+            });
+
+            renderProducts(filtered);
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            
+            // Đổi class active nút bấm
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            if(cat === 'all') document.getElementById('btn-cat-all').classList.add('active');
+            if(cat === 'thep') document.getElementById('btn-cat-thep').classList.add('active');
+            if(cat === 'catda') document.getElementById('btn-cat-catda').classList.add('active');
+            if(cat === 'ximang') document.getElementById('btn-cat-ximang').classList.add('active');
+
+            handleSearchFilter();
+        }
+
+        function formatVND(num) {
+            return num.toLocaleString('vi-VN') + 'đ';
+        }
+
+        function changeQty(id, delta) {
+            const input = document.getElementById(id);
+            let val = parseInt(input.value) || 1;
+            val += delta;
+            if(val < 1) val = 1;
+            input.value = val;
+        }
+
+        // =========================================
+        // LOGIC AUTHENTICATION (ĐĂNG NHẬP TRẠNG THÁI)
+        // =========================================
+        function openAuthModal(tab = 'login') {
+            document.getElementById('auth-modal').classList.add('active');
+            switchAuthTab(tab);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.remove('active');
+        }
+
+        function switchAuthTab(type) {
+            const tabLogin = document.getElementById('tab-login');
+            const tabReg = document.getElementById('tab-register');
+            const formLogin = document.getElementById('form-login');
+            const formReg = document.getElementById('form-register');
+
+            if(type === 'login') {
+                tabLogin.classList.add('active');
+                tabReg.classList.remove('active');
+                formLogin.style.display = 'block';
+                formReg.style.display = 'none';
+            } else {
+                tabReg.classList.add('active');
+                tabLogin.classList.remove('active');
+                formReg.style.display = 'block';
+                formLogin.style.display = 'none';
+            }
+        }
+
+        function updateUIForLoggedInUser(username) {
+            const userArea = document.getElementById('user-status-area');
+            userArea.innerHTML = `
+                <i class="fas fa-user-check"></i> Xin chào, ${username} 
+                <span onclick="logout(event)" style="text-decoration:underline; cursor:pointer; color:#ef4444; font-size:11px; margin-left:8px; font-weight:normal;">[Thoát]</span>
+            `;
+            userArea.onclick = null;
+        }
+
+        function handleAuth(event, type) {
+            event.preventDefault();
+            if(type === 'login') {
+                const user = document.getElementById('login-user').value.trim();
+                const pass = document.getElementById('login-pass').value;
+
+                if(user === 'admin' && pass === '123') {
+                    currentUser = 'Hệ Thống Admin';
+                } else if(user && pass.length >= 3) {
+                    currentUser = sanitizeInput(user);
+                } else {
+                    showToast('error', 'Tài khoản hoặc mật khẩu không hợp lệ.');
+                    return;
+                }
+                showToast('success', `Đăng nhập thành công. Xin chào ${currentUser}!`);
+            } else {
+                const user = document.getElementById('reg-user').value.trim();
+                if(user.length < 3) {
+                    showToast('error', 'Tên tài khoản tối thiểu phải có 3 ký tự.');
+                    return;
+                }
+                currentUser = sanitizeInput(user);
+                showToast('success', `Đăng ký thành công! Đã tự động đăng nhập.`);
+            }
+
+            localStorage.setItem('currentUser', currentUser);
+            updateUIForLoggedInUser(currentUser);
+            closeAuthModal();
+
+            if(document.getElementById('cart-panel').classList.contains('active') && cart.length > 0) {
+                checkout();
+            }
+        }
+
+        function logout(event) {
+            if(event) event.stopPropagation();
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            
+            const userArea = document.getElementById('user-status-area');
+            userArea.innerHTML = `<i class="far fa-user-circle"></i> Đăng nhập / Đăng ký`;
+            userArea.onclick = () => openAuthModal('login');
+            showToast('error', 'Đã đăng xuất khỏi hệ thống.');
+        }
+
+        // =========================================
+        // HỆ THỐNG GIỎ HÀNG VÀ ĐƠN HÀNG GIỮ TRẠNG THÁI
+        // =========================================
         function showToast(type, text) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -540,38 +723,10 @@
             }
         }
 
-        function changeQty(id, delta) {
-            const input = document.getElementById(id);
-            let val = parseInt(input.value) || 1;
-            val += delta;
-            if(val < 1) val = 1;
-            input.value = val;
-        }
-
-        function formatVND(num) {
-            return num.toLocaleString('vi-VN') + 'đ';
-        }
-
-        function selectPayment(method) {
-            selectedPaymentMethod = method;
-            document.getElementById('lbl-pay-sau').classList.remove('selected');
-            document.getElementById('lbl-pay-truoc').classList.remove('selected');
-            
-            if(method === 'sau') {
-                document.getElementById('lbl-pay-sau').classList.add('selected');
-                document.getElementById('pay-sau').checked = true;
-            } else {
-                document.getElementById('lbl-pay-truoc').classList.add('selected');
-                document.getElementById('pay-truoc').checked = true;
-            }
-        }
-
         function addToCart(name, price, inputId) {
             const input = document.getElementById(inputId);
-            // Ép kiểu sạch để bảo vệ tính toán số lượng
             const qty = Math.max(1, parseInt(input.value) || 1);
-
-            const safeName = sanitizeInput(name); // Lọc sạch tên trước khi đưa vào hệ thống
+            const safeName = sanitizeInput(name);
 
             const existing = cart.find(item => item.name === safeName);
             if(existing) {
@@ -581,6 +736,7 @@
             }
             
             input.value = 1; 
+            localStorage.setItem('cart', JSON.stringify(cart));
             updateBadges();
             showToast('success', `Đã gom hàng: +${qty} ${safeName}`);
         }
@@ -595,16 +751,20 @@
             const container = document.getElementById('cart-content-container');
             const totalEl = document.getElementById('cart-total');
             const payBox = document.getElementById('payment-module-box');
+            const shipBox = document.getElementById('shipping-module-box');
             container.innerHTML = '';
 
             if(cart.length === 0) {
                 container.innerHTML = '<div class="empty-msg">Chưa có vật tư trong giỏ.</div>';
                 totalEl.innerText = '0đ';
                 payBox.style.display = 'none';
+                shipBox.style.display = 'none';
                 return;
             }
 
             payBox.style.display = 'block'; 
+            shipBox.style.display = 'block'; 
+
             let total = 0;
             cart.forEach((item, index) => {
                 const subtotal = item.price * item.qty;
@@ -632,20 +792,61 @@
         function changeCartItemQty(index, delta) {
             cart[index].qty += delta;
             if(cart[index].qty < 1) cart[index].qty = 1;
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
             renderCart();
             updateBadges();
         }
 
         function removeFromCart(index) {
             cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
             renderCart();
             updateBadges();
             showToast('error', 'Đã bỏ vật tư khỏi giỏ.');
         }
 
+        function selectPayment(method) {
+            selectedPaymentMethod = method;
+            document.getElementById('lbl-pay-sau').classList.remove('selected');
+            document.getElementById('lbl-pay-truoc').classList.remove('selected');
+            
+            if(method === 'sau') {
+                document.getElementById('lbl-pay-sau').classList.add('selected');
+                document.getElementById('pay-sau').checked = true;
+            } else {
+                document.getElementById('lbl-pay-truoc').classList.add('selected');
+                document.getElementById('pay-truoc').checked = true;
+            }
+        }
+
+        // XỬ LÝ CHECKOUT GỬI ĐƠN VÀ THẨM ĐỊNH FORM GIAO HÀNG
         function checkout() {
             if(cart.length === 0) {
                 showToast('error', 'Giỏ hàng đang trống!');
+                return;
+            }
+
+            if (currentUser === null) {
+                showToast('error', 'Yêu cầu hệ thống: Vui lòng đăng nhập để gửi đơn hàng.');
+                openAuthModal('login');
+                return;
+            }
+
+            // Thu thập dữ liệu vận chuyển và thẩm định logic dữ liệu nhập vào
+            const shipName = document.getElementById('ship-name').value.trim();
+            const shipPhone = document.getElementById('ship-phone').value.trim();
+            const shipAddress = document.getElementById('ship-address').value.trim();
+
+            if(!shipName || !shipPhone || !shipAddress) {
+                showToast('error', 'Lỗi: Vui lòng nhập đầy đủ thông tin điều phối xe nhận hàng.');
+                return;
+            }
+
+            // Kiểm tra định dạng số điện thoại Việt Nam đơn giản (phải có 10 chữ số)
+            const phoneRegex = /^[0-9]{10}$/;
+            if(!phoneRegex.test(shipPhone)) {
+                showToast('error', 'Lỗi: Số điện thoại nhận hàng không đúng định dạng (yêu cầu 10 chữ số).');
                 return;
             }
 
@@ -658,23 +859,42 @@
                 items: [...cart],
                 total: total,
                 paymentMethod: paymentText,
+                customer: sanitizeInput(currentUser),
+                shipping: {
+                    name: sanitizeInput(shipName),
+                    phone: sanitizeInput(shipPhone),
+                    address: sanitizeInput(shipAddress)
+                },
                 status: 'pending' 
             };
 
             orders.unshift(newOrder); 
-            cart = []; 
+            cart = []; // Xóa trắng giỏ hàng
+
+            // Đồng bộ bộ nhớ đệm máy
+            localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // Xóa nội dung nhập form cũ để chuẩn bị cho đơn sau
+            document.getElementById('ship-name').value = '';
+            document.getElementById('ship-phone').value = '';
+            document.getElementById('ship-address').value = '';
+
             updateBadges();
             togglePanel('cart-panel', false);
-            showToast('success', `Cửa hàng ghi nhận đơn hàng ${newOrder.id}.`);
+            showToast('success', `Hệ thống ghi nhận đơn đặt hàng ${newOrder.id}.`);
 
+            // Giả lập xe duyệt bốc dỡ tự động sau 15 giây
             setTimeout(() => {
-                if (newOrder.status === 'pending') {
-                    newOrder.status = 'confirmed';
+                const targetOrder = orders.find(o => o.id === newOrder.id);
+                if (targetOrder && targetOrder.status === 'pending') {
+                    targetOrder.status = 'confirmed';
+                    localStorage.setItem('orders', JSON.stringify(orders));
                     updateBadges();
                     if(document.getElementById('order-panel').classList.contains('active')) {
                         renderOrders();
                     }
-                    showToast('success', `Đơn hàng ${newOrder.id} đã được phân xe giao hàng!`);
+                    showToast('success', `Đơn hàng ${newOrder.id} đã được phê duyệt phân phối xe!`);
                 }
             }, 15000); 
         }
@@ -706,7 +926,7 @@
                 if(order.status === 'pending') {
                     actionButtonHTML = `<button class="btn-cancel-order" onclick="cancelOrder('${order.id}')">Rút lại đơn</button>`;
                 } else {
-                    actionButtonHTML = `<span style="font-size:11px; color:var(--accent-green); font-weight:600;"><i class="fas fa-shipping-fast"></i> Đang bốc dỡ lên xe</span>`;
+                    actionButtonHTML = `<span style="font-size:11px; color:var(--accent-green); font-weight:600;"><i class="fas fa-shipping-fast"></i> Xe bốc dỡ đang vận chuyển</span>`;
                 }
 
                 card.innerHTML = `
@@ -719,6 +939,10 @@
                     </div>
                     <div class="order-details">
                         ${itemsHTML}
+                    </div>
+                    <div class="order-shipping-info">
+                        <i class="fas fa-user-tag"></i> Người nhận: ${order.shipping.name} (${order.shipping.phone})<br>
+                        <i class="fas fa-map-marked-alt"></i> Hạ hàng: ${order.shipping.address}
                     </div>
                     <div class="order-payment-info">
                         <i class="far fa-credit-card"></i> Hình thức: <strong>${order.paymentMethod}</strong>
@@ -736,9 +960,10 @@
             const index = orders.findIndex(order => order.id === id);
             if(index !== -1 && orders[index].status === 'pending') {
                 orders.splice(index, 1);
+                localStorage.setItem('orders', JSON.stringify(orders));
                 updateBadges();
                 renderOrders();
-                showToast('error', `Đã hủy và rút lại đơn hàng ${id} thành công.`);
+                showToast('error', `Đã hủy đơn hàng ${id}.`);
             }
         }
     </script>
