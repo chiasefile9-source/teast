@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VLXD Song Thịnh | Hệ Thống Vật Tư Kết Cấu</title>
     
-    <!-- LỚP BẢO VỆ 1: CONTENT SECURITY POLICY (CSP) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' https://images.unsplash.com data:;">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -310,7 +309,6 @@
         </div>
     </header>
 
-    <!-- KHU VỰC BANNER THÔNG BÁO BIẾN ĐỘNG GIÁ CỦA ADMIN -->
     <div id="global-announcement-zone"></div>
 
     <section class="hero">
@@ -338,7 +336,6 @@
 
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- PANEL 1: GIỎ HÀNG -->
     <div class="panel-overlay" id="cart-panel" onclick="togglePanel('cart-panel', false)">
         <div class="slide-panel" onclick="event.stopPropagation()">
             <div class="panel-header">
@@ -390,7 +387,6 @@
         </div>
     </div>
 
-    <!-- PANEL 2: ĐƠN HÀNG / ĐIỀU HÀNH ADMIN -->
     <div class="panel-overlay" id="order-panel" onclick="togglePanel('order-panel', false)">
         <div class="slide-panel" onclick="event.stopPropagation()">
             <div class="panel-header">
@@ -398,7 +394,6 @@
                 <button class="close-panel" onclick="togglePanel('order-panel', false)"><i class="fas fa-times"></i></button>
             </div>
             
-            <!-- THANH DIỀU HƯỚNG TABS CHO KHU VỰC ADMIN -->
             <div class="admin-nav-tabs" id="admin-tabs-nav-bar" style="display: none;">
                 <button class="admin-tab-btn active" id="tab-adm-orders" onclick="switchAdminSubTab('orders')">Quản lý Đơn</button>
                 <button class="admin-tab-btn" id="tab-adm-warehouse" onclick="switchAdminSubTab('warehouse')">Quản lý Kho & Giá</button>
@@ -409,7 +404,6 @@
         </div>
     </div>
 
-    <!-- POPUP MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
     <div class="modal-overlay" id="auth-modal" onclick="closeAuthModal()">
         <div class="auth-card" onclick="event.stopPropagation()" style="position: relative;">
             <button class="auth-close-btn" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
@@ -939,7 +933,7 @@
                     orders.forEach(order => container.appendChild(createOrderCardDOM(order, true)));
                 } 
                 else if (adminActiveTab === 'warehouse') {
-                    // SUB-TAB 2: BIẾN ĐỘNG KHO VÀ DIỀU CHỈNH GIÁ THỜI GIAN THỰC
+                    // SUB-TAB 2: BIẾN ĐỘNG KHO VÀ ĐIỀU CHỈNH GIÁ THỜI GIAN THỰC
                     const block = document.createElement('div');
                     block.style.paddingTop = '10px';
                     block.innerHTML = '<h4 style="font-size:12px; margin-bottom:15px; color:var(--text-muted);">DANH SÁCH VẬT TƯ LƯU KHO</h4>';
@@ -1026,11 +1020,11 @@
                     `;
                 }
             } else {
-                // QUYỀN CỦA KHÁCH HÀNG BÌNH THƯỜNG
+                // QUYỀN CỦA KHÁCH HÀNG BÌNH THƯỜNG (Đã sửa lỗi ${id} thành ${order.id})
                 if (order.status === 'completed') {
                     actionButtonHTML = `<span style="font-size:11px; color:#0369a1; font-weight:600; margin-top:10px; display:block;"><i class="fas fa-handshake"></i> Giao dịch hoàn tất. Cảm ơn quý khách!</span>`;
                 } else if (order.status === 'pending' || order.status === 'issue') {
-                    actionButtonHTML = `<button class="btn-cancel-order" style="margin-top:10px;" onclick="cancelOrder('${id}')">Hủy / Rút đơn</button>`;
+                    actionButtonHTML = `<button class="btn-cancel-order" style="margin-top:10px;" onclick="cancelOrder('${order.id}')">Hủy / Rút đơn</button>`;
                 } else {
                     actionButtonHTML = `<span style="font-size:11px; color:var(--accent-green); font-weight:600; margin-top:10px; display:block;"><i class="fas fa-shipping-fast"></i> Đội xe vận tải bốc dỡ đang đi giao</span>`;
                 }
