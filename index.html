@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VLXD Song Thịnh | Hệ Thống Vật Tư Kết Cấu</title>
     
+    <!-- LỚP BẢO VỆ 1: CONTENT SECURITY POLICY (CSP) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' https://images.unsplash.com data:;">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,9 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* =========================================
-           1. THIẾT KẾ TỐI GIẢN & EDITORIAL STYLE
-           ========================================= */
         :root {
             --bg-body: #ffffff;
             --bg-surface: #f8f9fa;
@@ -85,14 +83,11 @@
         .hero-content h1 { font-size: 2.2rem; font-weight: 600; line-height: 1.2; margin-bottom: 12px; }
         .hero-content p { color: var(--text-muted); font-size: 14px; font-weight: 300; }
 
-        /* THANH ĐIỀU KHIỂN: TÌM KIẾM & LỌC */
         .controls-wrapper {
             padding: 30px 40px 0;
             display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;
         }
-        .search-box {
-            position: relative; width: 100%; max-width: 320px;
-        }
+        .search-box { position: relative; width: 100%; max-width: 320px; }
         .search-box input {
             width: 100%; padding: 10px 16px 10px 38px; font-size: 13px;
             border: 1px solid var(--border-color); border-radius: 4px; outline: none; transition: var(--transition);
@@ -106,13 +101,10 @@
             padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 500;
             color: var(--text-muted); cursor: pointer; transition: var(--transition);
         }
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--text-main); color: #fff; border-color: var(--text-main);
-        }
+        .filter-btn:hover, .filter-btn.active { background: var(--text-main); color: #fff; border-color: var(--text-main); }
 
         .section-title { font-size: 1.3rem; font-weight: 600; padding: 40px 40px 20px; letter-spacing: -0.3px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); margin: 0 40px 30px; padding-left: 0; }
 
-        /* LƯỚI SẢN PHẨM */
         .products-grid {
             padding: 0 40px 80px; min-height: 40vh;
             display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 35px;
@@ -149,9 +141,7 @@
         }
         .product-card:hover .btn-add { border-color: var(--text-main); background: var(--text-main); color: #ffffff; }
 
-        /* =========================================
-           2. SLIDE-OUT PANEL (GIỎ HÀNG / ĐƠN HÀNG)
-           ========================================= */
+        /* PANELS */
         .panel-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.15); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
@@ -179,21 +169,14 @@
         .remove-btn { color: #9ca3af; background: none; border: none; cursor: pointer; font-size: 13px; }
         .remove-btn:hover { color: #ef4444; }
 
-        /* BIỂU MẪU GIAO HÀNG TRONG GIỎ HÀNG */
-        .shipping-box {
-            background: var(--bg-surface); border: 1px solid var(--border-color);
-            border-radius: 6px; padding: 16px; margin-top: 15px;
-        }
+        .shipping-box { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; margin-top: 15px; }
         .shipping-box h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 12px; color: var(--text-main); letter-spacing: 0.3px; }
         .shipping-field { margin-bottom: 10px; }
         .shipping-field label { display: block; font-size: 11px; font-weight: 500; color: var(--text-muted); margin-bottom: 4px; }
         .shipping-field input { width: 100%; padding: 8px 10px; font-size: 12px; border: 1px solid var(--border-color); border-radius: 4px; outline: none; }
         .shipping-field input:focus { border-color: var(--text-main); }
 
-        .payment-module {
-            background: var(--bg-surface); border: 1px solid var(--border-color);
-            border-radius: 6px; padding: 16px; margin-top: 15px; margin-bottom: 15px;
-        }
+        .payment-module { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; margin-top: 15px; margin-bottom: 15px; }
         .payment-module h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; color: var(--text-main); letter-spacing: 0.3px; }
         
         .payment-options { display: flex; gap: 10px; }
@@ -204,19 +187,14 @@
         }
         .payment-label input { display: none; }
         .payment-label:hover { border-color: var(--text-main); }
-        .payment-label.selected {
-            border-color: var(--accent-brick); background: #fdf4f2; color: var(--accent-brick);
-        }
+        .payment-label.selected { border-color: var(--accent-brick); background: #fdf4f2; color: var(--accent-brick); }
 
         .panel-footer { margin-top: auto; padding-top: 15px; border-top: 1px solid var(--border-color); }
         .total-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .total-price { font-size: 1.25rem; font-weight: 600; color: var(--text-main); }
 
         /* ĐƠN HÀNG */
-        .order-card {
-            border: 1px solid var(--border-color); border-radius: 6px;
-            padding: 16px; margin-bottom: 15px; background: var(--bg-surface);
-        }
+        .order-card { border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; margin-bottom: 15px; background: var(--bg-surface); }
         .order-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
         .order-id { font-weight: 600; color: var(--text-main); font-size: 12px; }
         
@@ -229,16 +207,11 @@
         
         .order-shipping-info { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.4; }
         .order-payment-info { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
-        .order-payment-info i { color: var(--text-main); }
 
         .order-total-row { display: flex; justify-content: space-between; align-items: center; }
         .order-total-price { font-weight: 600; font-size: 13px; }
 
-        .btn-cancel-order {
-            background: #fff; border: 1px solid #f3f4f6; color: #ef4444;
-            padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 500;
-            cursor: pointer; transition: var(--transition);
-        }
+        .btn-cancel-order { background: #fff; border: 1px solid #f3f4f6; color: #ef4444; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; cursor: pointer; transition: var(--transition); }
         .btn-cancel-order:hover { background: #fef2f2; border-color: #fca5a5; }
 
         .empty-msg { text-align: center; color: var(--text-muted); margin-top: 40px; font-size: 13px; font-weight: 300; }
@@ -254,9 +227,7 @@
         .toast.success { border-left: 3px solid var(--accent-green); }
         .toast.error { border-left: 3px solid #ef4444; }
 
-        /* =========================================
-           3. POPUP MODAL ĐĂNG NHẬP / ĐĂNG KÝ
-           ========================================= */
+        /* MODAL MODAL AUTH */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
@@ -287,11 +258,7 @@
 
         .auth-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; }
 
-        /* FOOTER INFO */
-        .footer-info-section {
-            padding: 60px 40px; background: var(--bg-surface); border-top: 1px solid var(--border-color);
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 60px;
-        }
+        .footer-info-section { padding: 60px 40px; background: var(--bg-surface); border-top: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 60px; }
         .info-column h4 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; color: var(--text-main); }
         .info-column p { font-size: 13px; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
         .info-column p i { color: var(--text-main); margin-right: 8px; width: 14px; }
@@ -308,7 +275,7 @@
                 <i class="far fa-user-circle"></i> Đăng nhập / Đăng ký
             </button>
             <button class="action-btn has-badge" onclick="togglePanel('order-panel', true)">
-                <i class="fas fa-file-invoice"></i> Đơn của bạn (<span id="order-count">0</span>)
+                <i class="fas fa-file-invoice"></i> Đơn hệ thống (<span id="order-count">0</span>)
             </button>
             <button class="action-btn" onclick="togglePanel('cart-panel', true)">
                 <i class="fas fa-shopping-bag"></i> Giỏ hàng [<span id="cart-count">0</span>]
@@ -337,11 +304,11 @@
     </div>
 
     <h2 class="section-title">Danh mục vật tư cốt lõi</h2>
-    <div class="products-grid" id="products-grid-container">
-        </div>
+    <div class="products-grid" id="products-grid-container"></div>
 
     <div id="toast-container" class="toast-container"></div>
 
+    <!-- PANEL 1: GIỎ HÀNG -->
     <div class="panel-overlay" id="cart-panel" onclick="togglePanel('cart-panel', false)">
         <div class="slide-panel" onclick="event.stopPropagation()">
             <div class="panel-header">
@@ -393,16 +360,18 @@
         </div>
     </div>
 
+    <!-- PANEL 2: ĐƠN HÀNG -->
     <div class="panel-overlay" id="order-panel" onclick="togglePanel('order-panel', false)">
         <div class="slide-panel" onclick="event.stopPropagation()">
             <div class="panel-header">
-                <h2>Trạng thái hóa đơn</h2>
+                <h2 id="order-panel-title">Hóa đơn hệ thống</h2>
                 <button class="close-panel" onclick="togglePanel('order-panel', false)"><i class="fas fa-times"></i></button>
             </div>
             <div class="panel-content" id="order-content-container"></div>
         </div>
     </div>
 
+    <!-- POPUP MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
     <div class="modal-overlay" id="auth-modal" onclick="closeAuthModal()">
         <div class="auth-card" onclick="event.stopPropagation()" style="position: relative;">
             <button class="auth-close-btn" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
@@ -517,29 +486,28 @@
         let currentCategory = 'all';
 
         // =========================================
-        // KHỞI TẠO BIẾN & TẢI TRẠNG THÁI TỪ LOCALSTORAGE
+        // SỬA LỖI: HỆ THỐNG QUẢN LÝ BỘ NHỚ DATA TÀI KHOẢN
         // =========================================
+        let users = JSON.parse(localStorage.getItem('users')) || []; 
         let currentUser = localStorage.getItem('currentUser') || null;
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let orders = JSON.parse(localStorage.getItem('orders')) || [];
         let selectedPaymentMethod = 'sau';
 
-        // Khởi động trang web
         document.addEventListener('DOMContentLoaded', () => {
             if (currentUser) {
                 updateUIForLoggedInUser(currentUser);
             }
-            renderProducts(products); // Đổ dữ liệu sản phẩm gốc ra grid
+            renderProducts(products);
             updateBadges();
         });
 
-        // Hàm Đổ Dữ Liệu Sản Phẩm Ra Giao Diện
         function renderProducts(productsArray) {
             const container = document.getElementById('products-grid-container');
             container.innerHTML = '';
 
             if(productsArray.length === 0) {
-                container.innerHTML = '<div class="empty-msg" style="grid-column: 1/-1;">Không tìm thấy vật tư phù hợp với từ khóa.</div>';
+                container.innerHTML = '<div class="empty-msg" style="grid-column: 1/-1;">Không tìm thấy vật tư phù hợp.</div>';
                 return;
             }
 
@@ -565,43 +533,29 @@
             });
         }
 
-        // Kiểm tra tính hợp lệ số lượng gõ tay
         function validateInputQty(input) {
             let val = parseInt(input.value);
-            if(isNaN(val) || val < 1) {
-                input.value = 1;
-            }
+            if(isNaN(val) || val < 1) input.value = 1;
         }
 
-        // Xử lý Tìm kiếm kết hợp Lọc danh mục
         function handleSearchFilter() {
             const keyword = document.getElementById('search-input').value.toLowerCase().trim();
-            
             const filtered = products.filter(prod => {
                 const matchKeyword = prod.name.toLowerCase().includes(keyword);
                 const matchCategory = (currentCategory === 'all' || prod.category === currentCategory);
                 return matchKeyword && matchCategory;
             });
-
             renderProducts(filtered);
         }
 
         function filterCategory(cat) {
             currentCategory = cat;
-            
-            // Đổi class active nút bấm
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            if(cat === 'all') document.getElementById('btn-cat-all').classList.add('active');
-            if(cat === 'thep') document.getElementById('btn-cat-thep').classList.add('active');
-            if(cat === 'catda') document.getElementById('btn-cat-catda').classList.add('active');
-            if(cat === 'ximang') document.getElementById('btn-cat-ximang').classList.add('active');
-
+            document.getElementById(`btn-cat-${cat}`).classList.add('active');
             handleSearchFilter();
         }
 
-        function formatVND(num) {
-            return num.toLocaleString('vi-VN') + 'đ';
-        }
+        function formatVND(num) { return num.toLocaleString('vi-VN') + 'đ'; }
 
         function changeQty(id, delta) {
             const input = document.getElementById(id);
@@ -612,16 +566,14 @@
         }
 
         // =========================================
-        // LOGIC AUTHENTICATION (ĐĂNG NHẬP TRẠNG THÁI)
+        // SỬA LỖI HOÀN TOÀN LOGIC ĐĂNG NHẬP / ĐĂNG KÝ
         // =========================================
         function openAuthModal(tab = 'login') {
             document.getElementById('auth-modal').classList.add('active');
             switchAuthTab(tab);
         }
 
-        function closeAuthModal() {
-            document.getElementById('auth-modal').classList.remove('active');
-        }
+        function closeAuthModal() { document.getElementById('auth-modal').classList.remove('active'); }
 
         function switchAuthTab(type) {
             const tabLogin = document.getElementById('tab-login');
@@ -644,45 +596,81 @@
 
         function updateUIForLoggedInUser(username) {
             const userArea = document.getElementById('user-status-area');
-            userArea.innerHTML = `
-                <i class="fas fa-user-check"></i> Xin chào, ${username} 
-                <span onclick="logout(event)" style="text-decoration:underline; cursor:pointer; color:#ef4444; font-size:11px; margin-left:8px; font-weight:normal;">[Thoát]</span>
-            `;
+            if (username === 'Hệ Thống Admin') {
+                userArea.innerHTML = `
+                    <i class="fas fa-user-shield" style="color:#059669;"></i> <strong>ADMIN PANEL</strong>
+                    <span onclick="logout(event)" style="text-decoration:underline; cursor:pointer; color:#ef4444; font-size:11px; margin-left:8px; font-weight:normal;">[Thoát]</span>
+                `;
+            } else {
+                userArea.innerHTML = `
+                    <i class="fas fa-user-check"></i> Chào, ${username} 
+                    <span onclick="logout(event)" style="text-decoration:underline; cursor:pointer; color:#ef4444; font-size:11px; margin-left:8px; font-weight:normal;">[Thoát]</span>
+                `;
+            }
             userArea.onclick = null;
         }
 
         function handleAuth(event, type) {
             event.preventDefault();
-            if(type === 'login') {
+            
+            if (type === 'register') {
+                const user = document.getElementById('reg-user').value.trim();
+                const email = document.getElementById('reg-email').value.trim();
+                const pass = document.getElementById('reg-pass').value;
+
+                if (user.length < 3) {
+                    showToast('error', 'Lỗi: Tên tài khoản tối thiểu phải có 3 ký tự.');
+                    return;
+                }
+                if (user.toLowerCase() === 'admin' || user === 'Hệ Thống Admin') {
+                    showToast('error', 'Lỗi bảo mật: Không được phép đăng ký tài khoản trùng tên Admin hệ thống.');
+                    return;
+                }
+
+                // Thẩm định kiểm tra xem tài khoản đã tồn tại chưa
+                const isExist = users.some(u => u.username.toLowerCase() === user.toLowerCase());
+                if (isExist) {
+                    showToast('error', 'Thất bại: Tên tài khoản này đã có người sử dụng.');
+                    return;
+                }
+
+                // Lưu tài khoản mới vào mảng dữ liệu LocalStorage
+                users.push({ username: user, email: email, password: pass });
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                currentUser = sanitizeInput(user);
+                showToast('success', `Đăng ký thành công! Chào mừng thành viên mới: ${currentUser}`);
+                document.getElementById('form-register').reset();
+
+            } else {
+                // Logic Xử lý Đăng Nhập
                 const user = document.getElementById('login-user').value.trim();
                 const pass = document.getElementById('login-pass').value;
 
-                if(user === 'admin' && pass === '123') {
+                // Trường hợp 1: Check tài khoản quản trị tối cao
+                if (user === 'admin' && pass === '123') {
                     currentUser = 'Hệ Thống Admin';
-                } else if(user && pass.length >= 3) {
-                    currentUser = sanitizeInput(user);
+                    showToast('success', 'Đăng nhập thành công với quyền Quản Trị Viên!');
+                    document.getElementById('form-login').reset();
                 } else {
-                    showToast('error', 'Tài khoản hoặc mật khẩu không hợp lệ.');
-                    return;
+                    // Trường hợp 2: Đối chiếu kiểm tra dữ liệu khách hàng đăng ký
+                    const foundUser = users.find(u => u.username.toLowerCase() === user.toLowerCase() && u.password === pass);
+                    
+                    if (foundUser) {
+                        currentUser = sanitizeInput(foundUser.username);
+                        showToast('success', `Đăng nhập thành công. Xin chào ${currentUser}!`);
+                        document.getElementById('form-login').reset();
+                    } else {
+                        showToast('error', 'Lỗi: Sai tên tài khoản hoặc mật khẩu hệ thống.');
+                        return;
+                    }
                 }
-                showToast('success', `Đăng nhập thành công. Xin chào ${currentUser}!`);
-            } else {
-                const user = document.getElementById('reg-user').value.trim();
-                if(user.length < 3) {
-                    showToast('error', 'Tên tài khoản tối thiểu phải có 3 ký tự.');
-                    return;
-                }
-                currentUser = sanitizeInput(user);
-                showToast('success', `Đăng ký thành công! Đã tự động đăng nhập.`);
             }
 
             localStorage.setItem('currentUser', currentUser);
             updateUIForLoggedInUser(currentUser);
             closeAuthModal();
-
-            if(document.getElementById('cart-panel').classList.contains('active') && cart.length > 0) {
-                checkout();
-            }
+            updateBadges();
         }
 
         function logout(event) {
@@ -693,11 +681,12 @@
             const userArea = document.getElementById('user-status-area');
             userArea.innerHTML = `<i class="far fa-user-circle"></i> Đăng nhập / Đăng ký`;
             userArea.onclick = () => openAuthModal('login');
-            showToast('error', 'Đã đăng xuất khỏi hệ thống.');
+            showToast('error', 'Đã đăng xuất khỏi tài khoản.');
+            updateBadges();
         }
 
         // =========================================
-        // HỆ THỐNG GIỎ HÀNG VÀ ĐƠN HÀNG GIỮ TRẠNG THÁI
+        // HỆ THỐNG GIỎ HÀNG VÀ PHÂN QUYỀN HIỂN THỊ ĐƠN HÀNG
         // =========================================
         function showToast(type, text) {
             const container = document.getElementById('toast-container');
@@ -718,9 +707,7 @@
                 panel.classList.add('active');
                 if(id === 'cart-panel') renderCart();
                 if(id === 'order-panel') renderOrders();
-            } else {
-                panel.classList.remove('active');
-            }
+            } else { panel.classList.remove('active'); }
         }
 
         function addToCart(name, price, inputId) {
@@ -729,11 +716,7 @@
             const safeName = sanitizeInput(name);
 
             const existing = cart.find(item => item.name === safeName);
-            if(existing) {
-                existing.qty += qty;
-            } else {
-                cart.push({ name: safeName, price, qty });
-            }
+            if(existing) { existing.qty += qty; } else { cart.push({ name: safeName, price, qty }); }
             
             input.value = 1; 
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -744,7 +727,14 @@
         function updateBadges() {
             const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
             document.getElementById('cart-count').innerText = totalQty;
-            document.getElementById('order-count').innerText = orders.length;
+
+            // Đếm số đơn hiển thị theo phân quyền người xem
+            if (currentUser === 'Hệ Thống Admin') {
+                document.getElementById('order-count').innerText = orders.length; 
+            } else {
+                const userOrders = orders.filter(o => o.customer === currentUser);
+                document.getElementById('order-count').innerText = userOrders.length;
+            }
         }
 
         function renderCart() {
@@ -767,9 +757,7 @@
 
             let total = 0;
             cart.forEach((item, index) => {
-                const subtotal = item.price * item.qty;
-                total += subtotal;
-
+                total += item.price * item.qty;
                 const div = document.createElement('div');
                 div.className = 'cart-item';
                 div.innerHTML = `
@@ -792,7 +780,6 @@
         function changeCartItemQty(index, delta) {
             cart[index].qty += delta;
             if(cart[index].qty < 1) cart[index].qty = 1;
-            
             localStorage.setItem('cart', JSON.stringify(cart));
             renderCart();
             updateBadges();
@@ -810,45 +797,21 @@
             selectedPaymentMethod = method;
             document.getElementById('lbl-pay-sau').classList.remove('selected');
             document.getElementById('lbl-pay-truoc').classList.remove('selected');
-            
-            if(method === 'sau') {
-                document.getElementById('lbl-pay-sau').classList.add('selected');
-                document.getElementById('pay-sau').checked = true;
-            } else {
-                document.getElementById('lbl-pay-truoc').classList.add('selected');
-                document.getElementById('pay-truoc').checked = true;
-            }
+            document.getElementById(`lbl-pay-${method}`).classList.add('selected');
+            document.getElementById(`pay-${method}`).checked = true;
         }
 
-        // XỬ LÝ CHECKOUT GỬI ĐƠN VÀ THẨM ĐỊNH FORM GIAO HÀNG
         function checkout() {
-            if(cart.length === 0) {
-                showToast('error', 'Giỏ hàng đang trống!');
-                return;
-            }
+            if(cart.length === 0) { showToast('error', 'Giỏ hàng đang trống!'); return; }
+            if (currentUser === null) { showToast('error', 'Yêu cầu: Vui lòng đăng nhập để gửi đơn hàng.'); openAuthModal('login'); return; }
+            if (currentUser === 'Hệ Thống Admin') { showToast('error', 'Tài khoản Admin không có chức năng gửi đơn mua hàng.'); return; }
 
-            if (currentUser === null) {
-                showToast('error', 'Yêu cầu hệ thống: Vui lòng đăng nhập để gửi đơn hàng.');
-                openAuthModal('login');
-                return;
-            }
-
-            // Thu thập dữ liệu vận chuyển và thẩm định logic dữ liệu nhập vào
             const shipName = document.getElementById('ship-name').value.trim();
             const shipPhone = document.getElementById('ship-phone').value.trim();
             const shipAddress = document.getElementById('ship-address').value.trim();
 
-            if(!shipName || !shipPhone || !shipAddress) {
-                showToast('error', 'Lỗi: Vui lòng nhập đầy đủ thông tin điều phối xe nhận hàng.');
-                return;
-            }
-
-            // Kiểm tra định dạng số điện thoại Việt Nam đơn giản (phải có 10 chữ số)
-            const phoneRegex = /^[0-9]{10}$/;
-            if(!phoneRegex.test(shipPhone)) {
-                showToast('error', 'Lỗi: Số điện thoại nhận hàng không đúng định dạng (yêu cầu 10 chữ số).');
-                return;
-            }
+            if(!shipName || !shipPhone || !shipAddress) { showToast('error', 'Lỗi: Vui lòng điền thông tin điều phối xe.'); return; }
+            if(!/^[0-9]{10}$/.test(shipPhone)) { showToast('error', 'Lỗi: Số điện thoại phải đúng 10 chữ số.'); return; }
 
             const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const paymentText = selectedPaymentMethod === 'truoc' ? 'Thanh toán trước (Chuyển khoản)' : 'Thanh toán sau (COD)';
@@ -859,23 +822,16 @@
                 items: [...cart],
                 total: total,
                 paymentMethod: paymentText,
-                customer: sanitizeInput(currentUser),
-                shipping: {
-                    name: sanitizeInput(shipName),
-                    phone: sanitizeInput(shipPhone),
-                    address: sanitizeInput(shipAddress)
-                },
+                customer: currentUser, 
+                shipping: { name: sanitizeInput(shipName), phone: sanitizeInput(shipPhone), address: sanitizeInput(shipAddress) },
                 status: 'pending' 
             };
 
-            orders.unshift(newOrder); 
-            cart = []; // Xóa trắng giỏ hàng
-
-            // Đồng bộ bộ nhớ đệm máy
+            orders.unshift(newOrder);
+            cart = [];
             localStorage.setItem('cart', JSON.stringify(cart));
             localStorage.setItem('orders', JSON.stringify(orders));
             
-            // Xóa nội dung nhập form cũ để chuẩn bị cho đơn sau
             document.getElementById('ship-name').value = '';
             document.getElementById('ship-phone').value = '';
             document.getElementById('ship-address').value = '';
@@ -883,32 +839,29 @@
             updateBadges();
             togglePanel('cart-panel', false);
             showToast('success', `Hệ thống ghi nhận đơn đặt hàng ${newOrder.id}.`);
-
-            // Giả lập xe duyệt bốc dỡ tự động sau 15 giây
-            setTimeout(() => {
-                const targetOrder = orders.find(o => o.id === newOrder.id);
-                if (targetOrder && targetOrder.status === 'pending') {
-                    targetOrder.status = 'confirmed';
-                    localStorage.setItem('orders', JSON.stringify(orders));
-                    updateBadges();
-                    if(document.getElementById('order-panel').classList.contains('active')) {
-                        renderOrders();
-                    }
-                    showToast('success', `Đơn hàng ${newOrder.id} đã được phê duyệt phân phối xe!`);
-                }
-            }, 15000); 
         }
 
+        // =========================================
+        // PHÂN QUYỀN TRANG ĐƠN HÀNG GIỮA KHÁCH VÀ ADMIN
+        // =========================================
         function renderOrders() {
             const container = document.getElementById('order-content-container');
+            const titleEl = document.getElementById('order-panel-title');
             container.innerHTML = '';
 
-            if(orders.length === 0) {
-                container.innerHTML = '<div class="empty-msg">Chưa có lịch sử giao dịch đơn hàng.</div>';
+            const isAdmin = (currentUser === 'Hệ Thống Admin');
+            
+            // Bộ lọc: Admin xem tất cả, Khách chỉ xem đơn của chính họ
+            const visibleOrders = isAdmin ? orders : orders.filter(o => o.customer === currentUser);
+
+            if(visibleOrders.length === 0) {
+                container.innerHTML = `<div class="empty-msg">${isAdmin ? 'Hệ thống chưa nhận được đơn hàng nào.' : 'Bạn chưa thực hiện đơn đặt hàng nào.'}</div>`;
                 return;
             }
 
-            orders.forEach(order => {
+            titleEl.innerText = isAdmin ? "Bảng điều phối đơn (ADMIN)" : "Hóa đơn của bạn";
+
+            visibleOrders.forEach(order => {
                 const card = document.createElement('div');
                 card.className = 'order-card';
 
@@ -922,16 +875,25 @@
                     `;
                 });
 
+                // Phân quyền nút bấm theo tài khoản đăng nhập
                 let actionButtonHTML = '';
-                if(order.status === 'pending') {
-                    actionButtonHTML = `<button class="btn-cancel-order" onclick="cancelOrder('${order.id}')">Rút lại đơn</button>`;
+                if (isAdmin) {
+                    if(order.status === 'pending') {
+                        actionButtonHTML = `<button class="action-btn" style="background:#059669; color:#fff; border:none; padding:6px 12px; font-size:11px;" onclick="adminApproveOrder('${order.id}')"><i class="fas fa-truck"></i> Duyệt cấp xe</button>`;
+                    } else {
+                        actionButtonHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:600;"><i class="fas fa-check-double"></i> Đã bốc dỡ lên xe</span>`;
+                    }
                 } else {
-                    actionButtonHTML = `<span style="font-size:11px; color:var(--accent-green); font-weight:600;"><i class="fas fa-shipping-fast"></i> Xe bốc dỡ đang vận chuyển</span>`;
+                    if(order.status === 'pending') {
+                        actionButtonHTML = `<button class="btn-cancel-order" onclick="cancelOrder('${order.id}')">Rút lại đơn</button>`;
+                    } else {
+                        actionButtonHTML = `<span style="font-size:11px; color:var(--accent-green); font-weight:600;"><i class="fas fa-shipping-fast"></i> Xe vận tải đang giao</span>`;
+                    }
                 }
 
                 card.innerHTML = `
                     <div class="order-meta">
-                        <span class="order-id">${order.id}</span>
+                        <span class="order-id">${order.id} [Khách: ${order.customer}]</span>
                         <span>${order.time}</span>
                         <span class="status-badge ${order.status}">
                             ${order.status === 'pending' ? 'Chờ xác nhận' : 'Đã duyệt đơn'}
@@ -942,10 +904,7 @@
                     </div>
                     <div class="order-shipping-info">
                         <i class="fas fa-user-tag"></i> Người nhận: ${order.shipping.name} (${order.shipping.phone})<br>
-                        <i class="fas fa-map-marked-alt"></i> Hạ hàng: ${order.shipping.address}
-                    </div>
-                    <div class="order-payment-info">
-                        <i class="far fa-credit-card"></i> Hình thức: <strong>${order.paymentMethod}</strong>
+                        <i class="fas fa-map-marked-alt"></i> Vị trí hạ hàng: ${order.shipping.address}
                     </div>
                     <div class="order-total-row">
                         <div>Tổng tiền: <span class="order-total-price">${formatVND(order.total)}</span></div>
@@ -956,6 +915,18 @@
             });
         }
 
+        // Hàm xử lý duyệt đơn dành riêng cho Admin
+        function adminApproveOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if(order) {
+                order.status = 'confirmed';
+                localStorage.setItem('orders', JSON.stringify(orders));
+                renderOrders();
+                updateBadges();
+                showToast('success', `Đã phê duyệt lệnh xuất kho điều xe cho đơn ${orderId}`);
+            }
+        }
+
         function cancelOrder(id) {
             const index = orders.findIndex(order => order.id === id);
             if(index !== -1 && orders[index].status === 'pending') {
@@ -963,7 +934,7 @@
                 localStorage.setItem('orders', JSON.stringify(orders));
                 updateBadges();
                 renderOrders();
-                showToast('error', `Đã hủy đơn hàng ${id}.`);
+                showToast('error', `Đã rút và hủy đơn đặt hàng ${id}.`);
             }
         }
     </script>
